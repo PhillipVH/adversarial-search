@@ -74,7 +74,7 @@ public class Board {
         }
 
         // Check for a draw.
-        if (getLegalMoves(1).size() == 0 && getLegalMoves(2).size() == 0) {
+        if (getLegalMoves().size() == 0) {
             return 0; 
         }
 
