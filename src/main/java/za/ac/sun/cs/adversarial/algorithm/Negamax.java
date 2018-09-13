@@ -19,7 +19,7 @@ public class Negamax {
      * @return
      */
     public static int F1(Board node, int depth, int bound, int color) {
-        if ((depth == 0) || node.isTerminal() < 0) {
+        if ((depth == 0) || node.isTerminal() > 0) {
             return color;
         }
 
@@ -53,7 +53,7 @@ public class Negamax {
      * @return
      */
     public static int F2(Board node, int depth, int alpha, int beta, int color) {
-        if (depth == 0 || node.isTerminal() < 0) {
+        if (depth == 0 || node.isTerminal() > 0) {
             return color;
         }
 
@@ -65,6 +65,7 @@ public class Negamax {
             node.makeMove(color, move);
 
             value = max(value, -F2(node, depth - 1, -beta, -alpha, -color));
+
 
             node.undoMove(move);
 
