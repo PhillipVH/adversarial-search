@@ -3,6 +3,9 @@ package za.ac.sun.cs.adversarial.domain;
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 
+/**
+ * This class represents the game state.
+ */
 public class Board {
     private final int m;
     private final int n;
@@ -18,6 +21,9 @@ public class Board {
         this.player = 1;
     }
 
+    /**
+     * @return A list of all legal moves that can be made.
+     */
     public ArrayList<Move> getLegalMoves() {
         ArrayList<Move> moves = new ArrayList<Move>();
         for (int i = 0; i < this.m; i++) {
@@ -31,14 +37,25 @@ public class Board {
         return moves;
     }
 
+    /**
+     * Apply a move from the perspective of a given player onto the board.
+     */
     public void makeMove(int player, Move move) {
         this.board[move.getRow()][move.getColumn()] = player;
     }
 
+    /**
+     * @param move The move to undo
+     */
     public void undoMove(Move move) {
         this.board[move.getRow()][move.getColumn()] = 0;
     }
 
+    /**
+     * Check if the current state is terminal. If not, return the winning player.
+     *
+     * @return -1 if non-terminal, 0 if draw, 1 for player 1 win, 2 for player 2 win
+     */
     public int isTerminal() {
 
         // Check Row wins
@@ -53,7 +70,6 @@ public class Board {
         }
 
         // Check Column wins
-
         for (int i = 0; i <= this.n - this.k; i++) {
             for (int j = 0; j < this.n; j++) {
                 if (checkColumnWin(1, j, i)) {
@@ -85,29 +101,36 @@ public class Board {
         return -1;
     }
 
-    public boolean checkRowWin(int player, int row, int col) {
+    /**
+     * @return Check if a horizontal win condition has been reached.
+     */
+    private boolean checkRowWin(int player, int row, int col) {
         for (int j = col; j < col + this.k; j++) {
             if (this.board[row][j] != player) {
                 return false;
             }
         }
-
-
         return true;
     }
 
-    public boolean checkColumnWin(int player, int col, int row) {
+    /**
+     * @return Check if a vertical win condition has been reached.
+     */
+    private boolean checkColumnWin(int player, int col, int row) {
         for (int j = row; j < row + this.k; j++) {
             if (this.board[j][col] != player) {
                 return false;
             }
         }
 
-
         return true;
     }
 
-    public boolean checkDiagonalWin(int player, int row, int col) {
+
+    /**
+     * @return Check if a diagonal win condition has been reached.
+     */
+    private boolean checkDiagonalWin(int player, int row, int col) {
 
         boolean forward = true, reverse = true;
 
@@ -121,7 +144,6 @@ public class Board {
         }
 
         // Check backward diagonal
-
         for (int j = col; j < this.k; j++) {
             if (this.board[row + j][this.n - j - 1] != player) {
                 reverse = false;
