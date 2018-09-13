@@ -32,7 +32,7 @@ public class Negamax {
 
             value = max(value, -F1(node, depth - 1, -bound, -color));
 
-            node.undoMove();
+            node.undoMove(move);
 
             if (value >= bound) {
                 break;
@@ -66,7 +66,7 @@ public class Negamax {
 
             value = max(value, -F2(node, depth - 1, -beta, -alpha, -color));
 
-            node.undoMove();
+            node.undoMove(move);
 
             alpha = max(alpha, value);
 

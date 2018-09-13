@@ -31,13 +31,12 @@ public class Board {
         return moves;
     }
 
-
     public void makeMove(int player, Move move) {
         this.board[move.getRow()][move.getColumn()] = player;
     }
 
-    public void makeMove(int player, int i, int j) {
-        this.board[i][j] = player;
+    public void undoMove(Move move) {
+        this.board[move.getRow()][move.getColumn()] = 0;
     }
 
     public int isTerminal() {
