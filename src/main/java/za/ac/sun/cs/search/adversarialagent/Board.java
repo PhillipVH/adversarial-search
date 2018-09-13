@@ -6,10 +6,10 @@ import java.lang.StringBuilder;
 import za.ac.sun.cs.search.adversarialagent.Move;
 
 public class Board {
-    private int m;
-    private int n;
-    private int k;
-    private int[][] board;
+    private final int m;
+    private final int n;
+    private final int k;
+    private final int[][] board;
     private int player;
 
     public Board (int m, int n, int k) {
@@ -20,9 +20,8 @@ public class Board {
         this.player = 1;
     }
 
-    public ArrayList<Move> getLegalMoves (int player) {
+    public ArrayList<Move> getLegalMoves () {
         ArrayList<Move> moves = new ArrayList<Move>();
-
         for (int i = 0; i < this.m; i++) {
             for (int j = 0; j < this.n; j++) {
                 if (this.board[i][j] == 0) {
