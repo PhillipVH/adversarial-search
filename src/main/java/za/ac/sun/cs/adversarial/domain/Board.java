@@ -160,6 +160,7 @@ public class Board {
         for (int i = 0; i < this.m; i++) {
             for (int j = 0; j < this.n; j++) {
                 sb.append(board[i][j]);
+                sb.append('\t');
             }
             sb.append("\n");
         }

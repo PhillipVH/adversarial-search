@@ -9,8 +9,8 @@ public class TestReferee {
 
     @Test
     public void smokeTest() {
-        Agent playerOne = new NegamaxAgent(3, 3, 3, 1);
-        Agent playerTwo = new NegamaxAgent(3, 3, 3, 2);
+        Agent playerOne = new NegamaxAgent(3, 3, 3, 10, 1);
+        Agent playerTwo = new NegamaxAgent(3, 3, 3, 2, 2);
 
         Referee referee = new Referee(playerOne, playerTwo);
 

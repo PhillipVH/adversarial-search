@@ -8,11 +8,13 @@ import java.util.List;
 
 public class NegamaxAgent extends Agent {
     private final Board board;
-    private int player;
+    private final int player;
+    private final int depth;
 
-    public NegamaxAgent(int m, int n, int k, int player) {
+    public NegamaxAgent(int m, int n, int k, int depth, int player) {
         this.board = new Board(m, n, k);
         this.player = player;
+        this.depth = depth;
     }
 
     @Override
@@ -25,9 +27,9 @@ public class NegamaxAgent extends Agent {
 
         /* Step through all the initial moves, selecting the best one. */
         for (Move move : moves) {
-            board.makeMove(1, move);
+            board.makeMove(player, move);
 
-            int value = Negamax.F2(board, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+            int value = Negamax.F2(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
 
             if (value > bestValue) {
                 bestValue = value;
