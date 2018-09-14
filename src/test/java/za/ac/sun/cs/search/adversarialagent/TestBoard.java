@@ -1,11 +1,9 @@
 package za.ac.sun.cs.search.adversarialagent;
 
-import java.beans.Transient;
-
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import za.ac.sun.cs.search.adversarialagent.Board;
+import za.ac.sun.cs.adversarial.domain.Board;
+import za.ac.sun.cs.adversarial.domain.Move;
 
 
 public class TestBoard {
