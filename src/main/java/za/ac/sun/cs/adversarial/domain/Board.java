@@ -77,7 +77,6 @@ public class Board {
                 }
             }
         }
-
         // Check Diagonal wins
         for (int i = 0; i <= this.n - this.k; i++) {
             for (int j = 0; j <= this.m - this.k; j++) {
@@ -129,12 +128,10 @@ public class Board {
      * @return True, if a diagonal win condition has been reached.
      */
     private boolean checkDiagonalWin(int player, int row, int col) {
-
         boolean forward = true, reverse = true;
-
         // Check forward diagonal
-        for (int j = col; j < this.k; j++) {
-            if (this.board[row + j][j] != player) {
+        for (int j = 0; j < this.k; j++) {
+            if (this.board[row + j][col + j] != player) {
                 forward = false;
                 break;
             }
@@ -142,11 +139,15 @@ public class Board {
         }
 
         // Check backward diagonal
-        for (int j = col; j < this.k; j++) {
-            if (this.board[row + j][this.n - j - 1] != player) {
-                reverse = false;
-                break;
+        if ((this.n - col - this.k) >= 0) {
+            for (int j = 0; j < this.k; j++) {
+                if (this.board[row + j][this.n - col - j - 1] != player) {
+                    reverse = false;
+                    break;
+                }
             }
+        } else {
+            reverse = false;
         }
 
         return (forward || reverse);
