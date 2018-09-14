@@ -100,7 +100,7 @@ public class Board {
     }
 
     /**
-     * @return Check if a horizontal win condition has been reached.
+     * @return True, if a horizontal win condition has been reached.
      */
     private boolean checkRowWin(int player, int row, int col) {
         for (int j = col; j < col + this.k; j++) {
@@ -112,7 +112,7 @@ public class Board {
     }
 
     /**
-     * @return Check if a vertical win condition has been reached.
+     * @return True, if a vertical win condition has been reached.
      */
     private boolean checkColumnWin(int player, int col, int row) {
         for (int j = row; j < row + this.k; j++) {
@@ -126,7 +126,7 @@ public class Board {
 
 
     /**
-     * @return Check if a diagonal win condition has been reached.
+     * @return True, if a diagonal win condition has been reached.
      */
     private boolean checkDiagonalWin(int player, int row, int col) {
 
@@ -159,8 +159,13 @@ public class Board {
 
         for (int i = 0; i < this.m; i++) {
             for (int j = 0; j < this.n; j++) {
-                sb.append(padLeft(Integer.toString(board[i][j]), 2));
-                sb.append('\t');
+                String piece;
+                if (board[i][j] == 0) {
+                    piece = "-";
+                } else {
+                    piece = (board[i][j] == 1) ? "x" : "o";
+                }
+                sb.append(padLeft(piece, 2));
             }
             sb.append("\n");
         }

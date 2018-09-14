@@ -27,4 +27,24 @@ public class TestReferee {
 
         referee.runGame();
     }
+
+    @Test
+    public void bigRandomAgents() {
+        Agent playerOne = new RandomAgent(10, 10, 7, 1);
+        Agent playerTwo = new RandomAgent(10, 10, 7, 2);
+
+        Referee referee = new Referee(playerOne, playerTwo);
+
+        referee.runGame();
+    }
+
+    @Test
+    public void smallerRandomAgents() {
+        Agent playerOne = new RandomAgent(5, 5, 2, 1);
+        Agent playerTwo = new RandomAgent(5, 5, 2, 1);
+
+        Referee referee = new Referee(playerOne, playerTwo);
+
+        referee.runGame();
+    }
 }

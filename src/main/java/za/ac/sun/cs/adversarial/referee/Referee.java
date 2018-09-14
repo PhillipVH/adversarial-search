@@ -38,7 +38,7 @@ public class Referee {
         while (true) {
 
             logger.info("Move " + roundCount);
-            logger.info("\n" + playerOneBoard.toString());
+            logger.info("\nPlayer One Board\n" + playerOneBoard.toString() + "\n\nPlayer Two Board\n" + playerTwoBoard.toString());
 
             /* Check if we are in a terminal state. */
             if (playerOneBoard.isTerminal() >= 0 || playerTwoBoard.isTerminal() >= 0) {
@@ -57,7 +57,7 @@ public class Referee {
 
 
             logger.info("Move " + roundCount++);
-            logger.info("\n" + playerOneBoard.toString());
+            logger.info("\nPlayer One Board\n" + playerOneBoard.toString() + "\n\nPlayer Two Board\n" + playerTwoBoard.toString());
 
 
             /* Play a move from player two to player one. */
@@ -67,7 +67,7 @@ public class Referee {
 
         /* Report the results. */
         logger.info("Game ended. Final board state: ");
-        logger.info("\n" + playerOneBoard.toString());
+        logger.info("\nPlayer One Board\n" + playerOneBoard.toString() + "\n\nPlayer Two Board\n" + playerTwoBoard.toString());
 
         switch (playerOne.getBoard().isTerminal()) {
             case -1:
