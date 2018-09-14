@@ -1,4 +1,4 @@
-package za.ac.sun.cs.adversarial;
+package za.ac.sun.cs.adversarial.referee;
 
 import za.ac.sun.cs.adversarial.agent.Agent;
 import za.ac.sun.cs.adversarial.domain.Move;
@@ -23,8 +23,12 @@ public class Referee {
      */
     public void runGame() {
         Move playerOneMove, playerTwoMove;
+        int roundCount = 1;
 
         while (true) {
+
+            System.out.println("Move " + roundCount++);
+            System.out.println(playerOne.getBoard());
 
             /* Check if we are in a terminal state. */
             if (playerOne.getBoard().isTerminal() > 0 || playerTwo.getBoard().isTerminal() > 0) {
