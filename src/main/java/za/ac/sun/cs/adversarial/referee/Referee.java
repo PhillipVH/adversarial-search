@@ -41,16 +41,17 @@ public class Referee {
             logger.info("\n" + playerOneBoard.toString());
 
             /* Check if we are in a terminal state. */
-            if (playerOneBoard.isTerminal() > 0 || playerTwoBoard.isTerminal() > 0) {
+            if (playerOneBoard.isTerminal() >= 0 || playerTwoBoard.isTerminal() >= 0) {
                 break;
             }
 
             /* Play a move from player one to player two. */
             playerOneMove = playerOne.requestMove();
+
             playerTwo.applyMove(playerOneMove);
 
             /* Check if we are in a terminal state. */
-            if (playerOneBoard.isTerminal() > 0 || playerTwoBoard.isTerminal() > 0) {
+            if (playerOneBoard.isTerminal() >= 0 || playerTwoBoard.isTerminal() >= 0) {
                 break;
             }
 
@@ -70,7 +71,7 @@ public class Referee {
 
         switch (playerOne.getBoard().isTerminal()) {
             case -1:
-                logger.info("Game is still in play.");
+                logger.info("Player 2 wins.");
                 break;
             case 0:
                 logger.info("Draw.");

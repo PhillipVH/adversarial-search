@@ -31,6 +31,7 @@ public class RandomAgent extends Agent {
 
         if (moves.size() == 0) {
             logger.info("No legal moves to be made.");
+            return null;
         }
 
         Move randomMove = moves.get(random.nextInt(moves.size()));
