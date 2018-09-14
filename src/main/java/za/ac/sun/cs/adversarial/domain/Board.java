@@ -11,14 +11,12 @@ public class Board {
     private final int n;
     private final int k;
     private final int[][] board;
-    private int player;
 
     public Board(int m, int n, int k) {
         this.m = m;
         this.n = n;
         this.k = k;
         this.board = new int[m][n];
-        this.player = 1;
     }
 
     /**
@@ -152,21 +150,6 @@ public class Board {
         }
 
         return (forward || reverse);
-    }
-
-    public int getPlayer() {
-        return this.player;
-    }
-
-    public void nextPlayer() {
-        switch (this.player) {
-            case 0:
-                this.player = 1;
-                break;
-            case 1:
-                this.player = 0;
-                break;
-        }
     }
 
     @Override

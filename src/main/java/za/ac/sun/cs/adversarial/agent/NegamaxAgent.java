@@ -13,8 +13,6 @@ public class NegamaxAgent {
 
         List<Move> moves= board.getLegalMoves();
 
-        int value = Integer.MIN_VALUE;
-
         for (Move move : moves) {
             board.makeMove(1, move);
 
