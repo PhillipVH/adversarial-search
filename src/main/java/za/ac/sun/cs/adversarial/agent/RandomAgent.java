@@ -1,5 +1,7 @@
 package za.ac.sun.cs.adversarial.agent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import za.ac.sun.cs.adversarial.domain.Board;
 import za.ac.sun.cs.adversarial.domain.Move;
 
@@ -10,6 +12,7 @@ import java.util.Random;
  * The class representing a random agent.
  */
 public class RandomAgent extends Agent {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final Board board;
     private final int player;
@@ -25,6 +28,10 @@ public class RandomAgent extends Agent {
     public Move requestMove() {
 
         List<Move> moves = board.getLegalMoves();
+
+        if (moves.size() == 0) {
+            logger.info("No legal moves to be made.");
+        }
 
         Move randomMove = moves.get(random.nextInt(moves.size()));
         board.makeMove(player, randomMove);

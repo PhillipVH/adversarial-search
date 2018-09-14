@@ -159,12 +159,16 @@ public class Board {
 
         for (int i = 0; i < this.m; i++) {
             for (int j = 0; j < this.n; j++) {
-                sb.append(board[i][j]);
+                sb.append(padLeft(Integer.toString(board[i][j]), 2));
                 sb.append('\t');
             }
             sb.append("\n");
         }
 
         return sb.toString();
+    }
+
+    public static String padLeft(String s, int n) {
+        return String.format("%1$" + n + "s", s);
     }
 }
