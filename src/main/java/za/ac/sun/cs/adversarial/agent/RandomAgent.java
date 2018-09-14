@@ -26,7 +26,10 @@ public class RandomAgent extends Agent {
 
         List<Move> moves = board.getLegalMoves();
 
-        return moves.get(random.nextInt(moves.size()));
+        Move randomMove = moves.get(random.nextInt(moves.size()));
+        board.makeMove(player, randomMove);
+
+        return randomMove;
     }
 
     @Override
