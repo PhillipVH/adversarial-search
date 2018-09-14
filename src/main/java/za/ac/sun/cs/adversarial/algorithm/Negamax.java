@@ -12,11 +12,7 @@ public class Negamax {
 
     /**
      * The branch-and-bound variation of Negamax. (Knuth75, page 297)
-     * @param node
-     * @param depth
-     * @param bound
-     * @param color
-     * @return
+     * @return The value of the given node.
      */
     public static int F1(Board node, int depth, int bound, int color) {
         if ((depth == 0) || node.isTerminal() > 0) {
@@ -45,12 +41,7 @@ public class Negamax {
 
     /**
      * The alpha-beta variation of Negamax. (Knuth75, page 298)
-     * @param node
-     * @param depth
-     * @param alpha
-     * @param beta
-     * @param color
-     * @return
+     * @return The value of the given node.
      */
     public static int F2(Board node, int depth, int alpha, int beta, int color) {
         if (depth == 0 || node.isTerminal() > 0) {
