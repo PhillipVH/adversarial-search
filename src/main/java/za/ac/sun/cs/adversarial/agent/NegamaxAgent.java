@@ -46,4 +46,9 @@ public class NegamaxAgent extends Agent {
     public void applyMove(Move move) {
         board.makeMove(-player, move);
     }
+
+    @Override
+    public Board getBoard() {
+        return this.board;
+    }
 }
