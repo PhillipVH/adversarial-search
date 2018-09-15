@@ -177,4 +177,11 @@ public class Board {
     public static String padLeft(String s, int n) {
         return String.format("%1$" + n + "s", s);
     }
+
+    /**
+     * @return The piece at the index [i][j]
+     */
+    public int at(int i, int j) {
+        return board[i][j];
+    }
 }
