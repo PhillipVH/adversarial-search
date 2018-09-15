@@ -74,7 +74,7 @@ public class Zobrist {
      * @param player The player making the move. 1 for player one, 2 for player 2.
      */
     public void hashOut(Move move, int player) {
-        this.hash ^= table[move.getRow()][move.getColumn()][player];
+        this.hash ^= table[move.getRow()][move.getColumn()][player - 1];
     }
 
     /**
