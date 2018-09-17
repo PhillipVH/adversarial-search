@@ -10,12 +10,13 @@ public class Negascout {
 
     /**
      * The Negascout algorithm. (A Comparative Study of Game Tree Searching Methods, Fig 5)
+     *
      * @return The value of the given node.
      */
 
     public static int NegaScout(Board board, int depth, int alpha, int beta, int player) {
 
-        if (depth == 0 || (board.isTerminal()) != -1)  {
+        if (depth == 0 || (board.isTerminal()) != -1) {
             return player;
         }
 
@@ -23,7 +24,7 @@ public class Negascout {
         int n = beta;
 
         // Generate successors
-        for (Move move: board.getLegalMoves()) {
+        for (Move move : board.getLegalMoves()) {
             // Execute current move.
             board.makeMove(player, move);
 
@@ -39,17 +40,21 @@ public class Negascout {
             }
 
             // Adjust search window.
-            if (score > alpha) { alpha = score;}
+            if (score > alpha) {
+                alpha = score;
+            }
 
             // Undo move
             board.undoMove(move);
 
             // Cut offs.
-            if (alpha >= beta) { return alpha;}
+            if (alpha >= beta) {
+                return alpha;
+            }
             n = alpha + 1;
         }
 
         return score;
     }
-    
+
 }
