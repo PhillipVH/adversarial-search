@@ -40,4 +40,15 @@ public class TestNegascout {
         referee.runGame();
     }
 
+
+    @Test
+    public void largerRandomVNegascout() {
+        Agent playerOne = new RandomAgent(5, 5, 5, 1);
+        Agent playerTwo = new NegascoutAgent(5, 5, 5, 5, 1);
+
+        Referee referee = new Referee(playerOne, playerTwo);
+
+        referee.runGame();
+    }
+
 }
