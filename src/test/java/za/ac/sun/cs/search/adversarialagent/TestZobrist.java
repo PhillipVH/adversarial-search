@@ -39,6 +39,7 @@ public class TestZobrist {
         hasher.hashIn(move, 1);
 
         long hash = hasher.getHash();
+        System.out.println("Hash: " + hash);
 
         Assert.assertNotEquals(0, hash);
 
