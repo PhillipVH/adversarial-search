@@ -47,6 +47,10 @@ public class TranspositionTable {
         int index = (int) (hash % this.size);
         TranspositionWrapper tw = this.table[index];
 
+        if (tw == null) {
+            return null;
+        }
+
         if (tw.getCandidate().getKey() == hash) {
             // Entry is in the candidate position.
             return tw.getCandidate();

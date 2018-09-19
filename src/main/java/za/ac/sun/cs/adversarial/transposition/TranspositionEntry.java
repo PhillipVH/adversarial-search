@@ -30,6 +30,10 @@ public class TranspositionEntry {
         return this.score;
     }
 
+    public int getFlag() {
+        return this.flag;
+    }
+
     public int getDepth() {
         return this.depth;
     }
