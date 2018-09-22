@@ -2,6 +2,7 @@ package za.ac.sun.cs.adversarial.referee;
 
 import za.ac.sun.cs.adversarial.agent.Agent;
 import za.ac.sun.cs.adversarial.domain.Board;
+import za.ac.sun.cs.adversarial.domain.Domain;
 import za.ac.sun.cs.adversarial.domain.Move;
 
 import org.slf4j.Logger;
@@ -30,8 +31,8 @@ public class Referee {
     public void runGame() {
         Move playerOneMove, playerTwoMove;
 
-        Board playerOneBoard = playerOne.getBoard();
-        Board playerTwoBoard = playerTwo.getBoard();
+        Domain playerOneBoard = playerOne.getBoard();
+        Domain playerTwoBoard = playerTwo.getBoard();
 
         int roundCount = 1;
 

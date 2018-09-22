@@ -3,6 +3,7 @@ package za.ac.sun.cs.adversarial.agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import za.ac.sun.cs.adversarial.domain.Board;
+import za.ac.sun.cs.adversarial.domain.Domain;
 import za.ac.sun.cs.adversarial.domain.Move;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class RandomAgent extends Agent {
     }
 
     @Override
-    public Board getBoard() {
+    public Domain getBoard() {
         return this.board;
     }
 }

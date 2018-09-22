@@ -2,6 +2,7 @@ package za.ac.sun.cs.adversarial.agent;
 
 import za.ac.sun.cs.adversarial.algorithm.Negamax;
 import za.ac.sun.cs.adversarial.domain.Board;
+import za.ac.sun.cs.adversarial.domain.Domain;
 import za.ac.sun.cs.adversarial.domain.Move;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class NegamaxAgent extends Agent {
     }
 
     @Override
-    public Board getBoard() {
+    public Domain getBoard() {
         return this.board;
     }
 }
