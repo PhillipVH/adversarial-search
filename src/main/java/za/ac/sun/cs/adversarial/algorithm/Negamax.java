@@ -8,6 +8,7 @@ import za.ac.sun.cs.adversarial.domain.DigitsOfPiBoard;
 import za.ac.sun.cs.adversarial.domain.Domain;
 import za.ac.sun.cs.adversarial.domain.Move;
 import za.ac.sun.cs.adversarial.hash.Zobrist;
+import za.ac.sun.cs.adversarial.transposition.Flag;
 import za.ac.sun.cs.adversarial.transposition.TranspositionEntry;
 import za.ac.sun.cs.adversarial.transposition.TranspositionTable;
 
@@ -16,7 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This class represents the Negamax algorithm.
+ * This class represents the Negamax algorithm, and it's many
+ * variations.
  */
 public class Negamax {
 
@@ -25,9 +27,18 @@ public class Negamax {
     private final TranspositionTable transpositionTable;
     private final Zobrist hasher;
 
-    public Negamax(String variant) {
+    /**
+     * Constructor required for use of the iterative deepening variant
+     * of Negamax with alpha-beta pruning and move ordering from the
+     * transposition table.
+     *
+     * @param m
+     * @param n
+     * @param variant
+     */
+    public Negamax(int m, int n, String variant) {
         this.transpositionTable = new TranspositionTable(9);
-        this.hasher = new Zobrist()
+        this.hasher = new Zobrist(m, n);
 
         if (variant.equals("F3")) {
             logger.info("Initializing transposition table");
@@ -129,7 +140,7 @@ public class Negamax {
 
     /**
      * The alpha-beta variation of Negamax, with move ordering from
-     * a transposition table.
+     * a transposition table. And they said F2 was the optimum!
      *
      * (https://en.wikipedia.org/wiki/Negamax#Negamax_with_alpha_beta_pruning_and_transposition_tables)
      *
@@ -137,18 +148,40 @@ public class Negamax {
      */
     public int F3(Domain node, int depth, int alpha, int beta, int color) {
 
-        int alphaOrig = Integer.MAX_VALUE;
+        int alphaOrig = alpha;
 
         /* Lookup the state in the Transposition Table. */
-        Optional<TranspositionEntry> ttEntry = transpositionTable.get(123L);
+        hasher.initialHash((Board) node);
+        Optional<TranspositionEntry> ttEntry = transpositionTable.get(hasher.getHash());
 
+        if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
+            Flag ttFlag = ttEntry.get().getFlag();
+            int ttValue = ttEntry.get().getScore();
 
+            if (ttFlag == Flag.EXACT) {
+                logger.info("Exact match from TT");
+                return ttEntry.get().getScore();
+            } else if (ttFlag == Flag.LOWERBOUND) {
+                alpha = max(alpha, ttValue);
+            } else if (ttFlag == Flag.UPPERBOUND) {
+                beta = min(beta, ttValue);
+            }
+
+            if (alpha >= beta) {
+                logger.info("Cut-off from TT");
+                return ttValue;
+            }
+
+        }
+
+        /* Core algorithm. */
         if (depth == 0 || node.isTerminal() > 0) {
             return color * node.getValue();
         }
 
         List<Move> moves = node.getLegalMoves();
 
+        /* TODO: Replace shuffle with move ordering. */
         Collections.shuffle(moves);
 
         int value = Integer.MIN_VALUE;
@@ -156,9 +189,13 @@ public class Negamax {
         for (Move move : moves) {
             node.makeMove(color, move);
 
-            value = max(value, -F2(node, depth - 1, -beta, -alpha, -color));
+            hasher.hashIn(move, color);
+
+            value = max(value, -F3(node, depth - 1, -beta, -alpha, -color));
 
             node.undoMove(move);
+
+            hasher.hashOut(move, color);
 
             alpha = max(alpha, value);
 
@@ -166,6 +203,22 @@ public class Negamax {
                 break;
             }
         }
+
+        /* Store the state in the Transposition Table. */
+        TranspositionEntry ttEntryRef = ttEntry.orElse(new TranspositionEntry());
+
+        if (value <= alphaOrig) {
+            ttEntryRef.setFlag(Flag.UPPERBOUND);
+        } else if (value >= beta) {
+            ttEntryRef.setFlag(Flag.LOWERBOUND);
+        } else {
+            ttEntryRef.setFlag(Flag.EXACT);
+        }
+
+        ttEntryRef.setDepth(depth);
+
+        transpositionTable.put(hasher.getHash(), ttEntryRef);
+
 
         return value;
     }
@@ -177,5 +230,14 @@ public class Negamax {
      */
     private static int max(int a, int b) {
         return (a > b) ? a : b;
+    }
+
+    /**
+     * A helper function that returns the largest of its two arguments.
+     *
+     * @return The value of the largest argument
+     */
+    private static int min(int a, int b) {
+        return (a < b) ? a : b;
     }
 }
