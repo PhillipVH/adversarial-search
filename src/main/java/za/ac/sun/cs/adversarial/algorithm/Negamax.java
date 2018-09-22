@@ -6,6 +6,7 @@ import za.ac.sun.cs.adversarial.domain.DigitsOfPiBoard;
 import za.ac.sun.cs.adversarial.domain.Domain;
 import za.ac.sun.cs.adversarial.domain.Move;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,12 +50,14 @@ public class Negamax {
 
         List<Move> moves= node.getLegalMoves();
 
+        Collections.shuffle(moves);
+
         int value = Integer.MIN_VALUE;
 
         for (Move move : moves) {
             node.makeMove(color, move);
 
-            value = max(value, -F1(node, depth - 1, -bound, -color));
+            value = max(value, -F1(node, depth - 1, -value, -color));
 
             node.undoMove(move);
 
@@ -77,6 +80,8 @@ public class Negamax {
         }
 
         List<Move> moves= node.getLegalMoves();
+
+        Collections.shuffle(moves);
 
         int value = Integer.MIN_VALUE;
 

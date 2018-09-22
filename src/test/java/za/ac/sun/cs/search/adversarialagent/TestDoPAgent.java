@@ -2,9 +2,7 @@ package za.ac.sun.cs.search.adversarialagent;
 
 import org.junit.Assert;
 import org.junit.Test;
-import za.ac.sun.cs.adversarial.agent.Agent;
 import za.ac.sun.cs.adversarial.agent.DigitsOfPiAgent;
-import za.ac.sun.cs.adversarial.referee.Referee;
 
 public class TestDoPAgent {
 
