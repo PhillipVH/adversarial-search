@@ -10,4 +10,6 @@ public interface Domain {
     void makeMove(int player, Move move);
 
     void undoMove(Move move);
+
+    int getValue();
 }

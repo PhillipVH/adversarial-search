@@ -10,18 +10,20 @@ import java.util.List;
  * The class representing the Digits of Pi domain
  * from Knuth and Moore's "An Analysis of Alpha-Beta Pruning", p299.
  */
-public class DigitsOfPiBoard implements Domain, Value {
+public class DigitsOfPiBoard implements Domain {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private int currentDepth;
     private final List<Integer> ancestry;
     private final List<Integer> sampledDigits;
+    private final List<Integer> sampledIndices;
 
     public DigitsOfPiBoard() {
         this.currentDepth = 0;
         this.ancestry = new LinkedList<>();
         this.sampledDigits = new LinkedList<>();
+        this.sampledIndices = new LinkedList<>();
     }
 
 
@@ -49,13 +51,20 @@ public class DigitsOfPiBoard implements Domain, Value {
      */
     @Override
     public int getValue() {
-        int value = DigitsOfPi.samplePi(ancestry);
-        sampledDigits.add(value);
-        return value;
+        int idx = DigitsOfPi.getIndex(ancestry);
+
+        sampledDigits.add(DigitsOfPi.samplePi(idx));
+        sampledIndices.add(idx);
+
+        return 1;
     }
 
     public List<Integer> getSampledDigits() {
         return this.sampledDigits;
+    }
+
+    public List<Integer> getSampledIndices() {
+        return this.sampledIndices;
     }
 
     @Override
@@ -97,15 +106,15 @@ class DigitsOfPi {
             0, 8, 9, 9};
 
     /**
-     * @return The digit of Pi to which the ancestry
+     * @return The index into the digits of Pi to which the ancestry
      * record maps, or -1 in case of an error.
      */
-    static int samplePi(List<Integer> ancestry) {
+    static int getIndex(List<Integer> ancestry) {
         int[] candidate = new int[]{1, 1, 1, 1};
 
         for (int i = 0; i < 81; i++) {
             if (match(candidate, ancestry)) {
-                return digits[i];
+                return i;
             } else {
                 /* Increment the candidate. */
                 tick(candidate);
@@ -113,6 +122,13 @@ class DigitsOfPi {
         }
 
         return -1;
+    }
+
+    /**
+     * @return The digit of Pi that the index corresponds to.
+     */
+    static int samplePi(int idx) {
+        return digits[idx];
     }
 
     /**

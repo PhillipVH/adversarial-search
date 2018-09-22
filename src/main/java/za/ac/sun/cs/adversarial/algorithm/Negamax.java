@@ -1,7 +1,9 @@
 package za.ac.sun.cs.adversarial.algorithm;
 
+import za.ac.sun.cs.adversarial.agent.DigitsOfPiAgent;
 import za.ac.sun.cs.adversarial.domain.Board;
 import za.ac.sun.cs.adversarial.domain.DigitsOfPiBoard;
+import za.ac.sun.cs.adversarial.domain.Domain;
 import za.ac.sun.cs.adversarial.domain.Move;
 
 import java.util.List;
@@ -40,9 +42,9 @@ public class Negamax {
      * The branch-and-bound variation of Negamax. (Knuth75, page 297)
      * @return The value of the given node.
      */
-    public static int F1(Board node, int depth, int bound, int color) {
+    public static int F1(Domain node, int depth, int bound, int color) {
         if ((depth == 0) || node.isTerminal() > 0) {
-            return color;
+            return color * node.getValue();
         }
 
         List<Move> moves= node.getLegalMoves();
@@ -69,9 +71,9 @@ public class Negamax {
      * The alpha-beta variation of Negamax. (Knuth75, page 298)
      * @return The value of the given node.
      */
-    public static int F2(Board node, int depth, int alpha, int beta, int color) {
+    public static int F2(Domain node, int depth, int alpha, int beta, int color) {
         if (depth == 0 || node.isTerminal() > 0) {
-            return color;
+            return color * node.getValue();
         }
 
         List<Move> moves= node.getLegalMoves();
@@ -82,7 +84,6 @@ public class Negamax {
             node.makeMove(color, move);
 
             value = max(value, -F2(node, depth - 1, -beta, -alpha, -color));
-
 
             node.undoMove(move);
 
