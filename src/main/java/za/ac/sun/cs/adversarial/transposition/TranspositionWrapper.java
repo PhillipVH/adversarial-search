@@ -1,36 +1,39 @@
 package za.ac.sun.cs.adversarial.transposition;
 
-public class TranspositionWrapper {
+/**
+ * The class representing a pair of {@link TranspositionWrapper}s.
+ */
+class TranspositionWrapper {
     
     private TranspositionEntry candidate;
     private TranspositionEntry second;
 
-    public TranspositionWrapper(TranspositionEntry candidate, TranspositionEntry second) {
+    TranspositionWrapper(TranspositionEntry candidate, TranspositionEntry second) {
         this.candidate = candidate;
         this.second = second;
     }
 
-    public TranspositionEntry getCandidate() {
+    TranspositionEntry getCandidate() {
         return this.candidate;
     }
 
-    public TranspositionEntry getSecond() {
+    TranspositionEntry getSecond() {
         return this.second;
     }
 
-    public void setCandidate(TranspositionEntry candidate) {
+    void setCandidate(TranspositionEntry candidate) {
         this.candidate = candidate;
     }
 
-    public void setSecond(TranspositionEntry second) {
+    void setSecond(TranspositionEntry second) {
         this.second = second;
     }
 
-    public void shiftCandidate() {
+    void shiftCandidate() {
         this.second = this.candidate;
     }
 
-    public void reorder() {
+    void reorder() {
         TranspositionEntry temp = this.candidate;
 
         if (this.second.getDepth() >= this.candidate.getDepth()) {

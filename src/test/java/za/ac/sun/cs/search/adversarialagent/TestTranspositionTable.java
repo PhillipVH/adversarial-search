@@ -25,7 +25,7 @@ public class TestTranspositionTable {
 
         table.put(hasher.getHash(), new TranspositionEntry(hasher.getHash(), new Move(0, 0), 1, Flag.UPPERBOUND, 3));
 
-        TranspositionEntry entry = table.get(hasher.getHash());
+        TranspositionEntry entry = table.get(hasher.getHash()).get();
 
         Assert.assertEquals(1, entry.getScore());
         Assert.assertEquals(Flag.UPPERBOUND, entry.getFlag());
@@ -43,7 +43,7 @@ public class TestTranspositionTable {
 
         board.makeMove(1, new Move(0, 0));
 
-        TranspositionEntry entry = table.get(hasher.getHash());
+        TranspositionEntry entry = table.get(hasher.getHash()).get();
 
         Assert.assertNull(entry);
 

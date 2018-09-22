@@ -1,5 +1,7 @@
 package za.ac.sun.cs.adversarial.transposition;
 
+import java.util.Optional;
+
 public class TranspositionTable {
 
     private int bits; // Number of bits to store.
@@ -12,6 +14,11 @@ public class TranspositionTable {
         this.table = new TranspositionWrapper[this.size];
     }
 
+    /**
+     * Add a new {@link TranspositionEntry} into the table.
+     * @param hash The hash of the board state.
+     * @param entry The {@link TranspositionEntry} to be added.
+     */
     public void put(long hash, TranspositionEntry entry) {
         int index = (int) (hash % this.size);
         TranspositionWrapper tw = this.table[index];
@@ -43,23 +50,28 @@ public class TranspositionTable {
         }
     }
 
-    public TranspositionEntry get(long hash) {
+    /**
+     * Recall a {@link TranspositionEntry} from the the transposition table.
+     * @param hash The hash of the board state
+     * @return The associated {@link TranspositionEntry}, if it is present
+     */
+    public Optional<TranspositionEntry> get(long hash) {
         int index = (int) (hash % this.size);
         TranspositionWrapper tw = this.table[index];
 
         if (tw == null) {
-            return null;
+            return Optional.empty();
         }
 
         if (tw.getCandidate().getKey() == hash) {
             // Entry is in the candidate position.
-            return tw.getCandidate();
+            return Optional.of(tw.getCandidate());
         } else if (tw.getSecond().getKey() == hash) {
             // Entry is in the secondary position.
-            return tw.getSecond();
+            return Optional.of(tw.getSecond());
         } else {
             // Entry was not found.
-            return null;
+            return Optional.empty();
         }
     }
 
