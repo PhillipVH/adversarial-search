@@ -47,4 +47,33 @@ public class TestDoPBoard {
 
         Assert.assertEquals(0, board.getAncestry().size());
     }
+
+    @Test
+    public void terminalAtDepth() {
+
+        DigitsOfPiBoard board = new DigitsOfPiBoard();
+
+        for (int i = 0; i < 4; i++) {
+            List<Move> moves = board.getLegalMoves();
+
+            board.makeMove(0, moves.get(0));
+        }
+
+        Assert.assertEquals(1, board.isTerminal());
+    }
+
+    @Test
+    public void samplingPi() {
+
+        DigitsOfPiBoard board = new DigitsOfPiBoard();
+
+        for (int i = 0; i < 4; i++) {
+            List<Move> moves = board.getLegalMoves();
+
+            board.makeMove(0, moves.get(0));
+        }
+
+        Assert.assertEquals(1, board.isTerminal());
+
+    }
 }
