@@ -7,6 +7,7 @@ import org.junit.Test;
 import za.ac.sun.cs.adversarial.domain.Board;
 import za.ac.sun.cs.adversarial.domain.Move;
 import za.ac.sun.cs.adversarial.hash.Zobrist;
+import za.ac.sun.cs.adversarial.transposition.Flag;
 import za.ac.sun.cs.adversarial.transposition.TranspositionTable;
 import za.ac.sun.cs.adversarial.transposition.TranspositionEntry;
 
@@ -22,12 +23,12 @@ public class TestTranspositionTable {
 
         board.makeMove(1, new Move(0, 0));
 
-        table.put(hasher.getHash(), new TranspositionEntry(hasher.getHash(), new Move(0, 0), 1, 2, 3));
+        table.put(hasher.getHash(), new TranspositionEntry(hasher.getHash(), new Move(0, 0), 1, Flag.UPPERBOUND, 3));
 
         TranspositionEntry entry = table.get(hasher.getHash());
 
         Assert.assertEquals(1, entry.getScore());
-        Assert.assertEquals(2, entry.getFlag());
+        Assert.assertEquals(Flag.UPPERBOUND, entry.getFlag());
         Assert.assertEquals(3, entry.getDepth());
 
     }

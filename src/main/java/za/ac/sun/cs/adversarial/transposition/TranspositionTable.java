@@ -1,7 +1,7 @@
 package za.ac.sun.cs.adversarial.transposition;
 
 public class TranspositionTable {
-    
+
     private int bits; // Number of bits to store.
     private int size; // Size of transposition table.
     private TranspositionWrapper[] table;
@@ -26,14 +26,14 @@ public class TranspositionTable {
                     tw.setCandidate(entry);
                     tw.reorder();
                 }
-            } else if ( tw.getSecond().getKey() == hash) {
+            } else if (tw.getSecond().getKey() == hash) {
                 if (entry.getDepth() > tw.getSecond().getDepth()) {
                     tw.setSecond(entry);
                     tw.reorder();
                 }
             }
         } else {
-        // 2DEEP replacement scheme
+            // 2DEEP replacement scheme
             if (entry.getDepth() >= tw.getCandidate().getDepth()) {
                 tw.shiftCandidate();
                 tw.setCandidate(entry);

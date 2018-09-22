@@ -2,15 +2,20 @@ package za.ac.sun.cs.adversarial.transposition;
 
 import za.ac.sun.cs.adversarial.domain.Move;
 
+/**
+ * This class represents the details of an entry
+ * in a transposition table. It serves as a DTO,
+ * with getters and setters where appropriate.
+ */
 public class TranspositionEntry {
 
     private long key;
     private Move move;
     private int score;
-    private int flag;
+    private Flag flag;
     private int depth;
 
-    public TranspositionEntry(long key, Move move, int score, int flag, int depth) {
+    public TranspositionEntry(long key, Move move, int score, Flag flag, int depth) {
         this.key = key;
         this.move = move;
         this.score = score;
@@ -30,7 +35,7 @@ public class TranspositionEntry {
         return this.score;
     }
 
-    public int getFlag() {
+    public Flag getFlag() {
         return this.flag;
     }
 
@@ -50,7 +55,7 @@ public class TranspositionEntry {
         this.score = score;
     }
 
-    public void setFlag(int flag) {
+    public void setFlag(Flag flag) {
         this.flag = flag;
     }
 
@@ -58,3 +63,4 @@ public class TranspositionEntry {
         this.depth = depth;
     }
 }
+
