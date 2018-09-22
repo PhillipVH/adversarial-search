@@ -6,7 +6,7 @@ import java.lang.StringBuilder;
 /**
  * This class represents the game state.
  */
-public class Board implements Domain {
+public class Board implements Domain, Value {
     private final int m;
     private final int n;
     private final int k;
@@ -183,5 +183,10 @@ public class Board implements Domain {
      */
     public int at(int i, int j) {
         return board[i][j];
+    }
+
+    @Override
+    public int getValue() {
+        return 1;
     }
 }

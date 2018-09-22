@@ -1,6 +1,7 @@
 package za.ac.sun.cs.adversarial.algorithm;
 
 import za.ac.sun.cs.adversarial.domain.Board;
+import za.ac.sun.cs.adversarial.domain.DigitsOfPiBoard;
 import za.ac.sun.cs.adversarial.domain.Move;
 
 import java.util.List;
@@ -14,9 +15,9 @@ public class Negamax {
      * The pure minimax variation of Negamax. (Knuth75, page 297)
      * @return The value of the given node.
      */
-    public static int F0(Board node, int depth, int color) {
+    public static int F0(DigitsOfPiBoard node, int depth, int color) {
         if ((depth == 0) || node.isTerminal() > 0) {
-            return color;
+            return color * node.getValue();
         }
 
         List<Move> moves= node.getLegalMoves();

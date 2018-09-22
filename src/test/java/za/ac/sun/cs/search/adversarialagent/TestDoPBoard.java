@@ -59,6 +59,7 @@ public class TestDoPBoard {
             board.makeMove(0, moves.get(0));
         }
 
+        Assert.assertEquals(3, board.getValue());
         Assert.assertEquals(1, board.isTerminal());
     }
 
@@ -67,13 +68,17 @@ public class TestDoPBoard {
 
         DigitsOfPiBoard board = new DigitsOfPiBoard();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             List<Move> moves = board.getLegalMoves();
 
-            board.makeMove(0, moves.get(0));
+            board.makeMove(0, moves.get(i));
         }
 
-        Assert.assertEquals(1, board.isTerminal());
+        List<Move> moves = board.getLegalMoves();
+
+        board.makeMove(0, moves.get(1));
+
+        Assert.assertEquals(2, board.getValue());
 
     }
 }

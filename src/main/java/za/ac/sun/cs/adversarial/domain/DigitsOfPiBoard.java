@@ -10,16 +10,18 @@ import java.util.List;
  * The class representing the Digits of Pi domain
  * from Knuth and Moore's "An Analysis of Alpha-Beta Pruning", p299.
  */
-public class DigitsOfPiBoard implements Domain {
+public class DigitsOfPiBoard implements Domain, Value {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private int currentDepth;
     private final List<Integer> ancestry;
+    private final List<Integer> sampledDigits;
 
     public DigitsOfPiBoard() {
         this.currentDepth = 0;
         this.ancestry = new LinkedList<>();
+        this.sampledDigits = new LinkedList<>();
     }
 
 
@@ -34,28 +36,42 @@ public class DigitsOfPiBoard implements Domain {
     }
 
     /**
-     * @return -1 if non terminal, or the digit of Pi that this state maps to if terminal
+     * @return 1 if terminal, -1 if non-terminal
      */
     @Override
     public int isTerminal() {
         int depthTrigger = 4;
-        return (currentDepth == depthTrigger) ? DigitsOfPi.samplePi(ancestry) : -1;
+        return (currentDepth == depthTrigger) ? 1 : -1;
+    }
+
+    /**
+     * @return The digit of Pi that this state maps to
+     */
+    @Override
+    public int getValue() {
+        int value = DigitsOfPi.samplePi(ancestry);
+        sampledDigits.add(value);
+        return value;
+    }
+
+    public List<Integer> getSampledDigits() {
+        return this.sampledDigits;
     }
 
     @Override
     public void makeMove(int player, Move move) {
         currentDepth++;
         ancestry.add(move.getId());
-        logger.info("Depth after move: " + currentDepth);
-        logger.info("Ancestry after move: " + ancestry.toString());
+        logger.trace("Depth after move: " + currentDepth);
+        logger.trace("Ancestry after move: " + ancestry.toString());
     }
 
     @Override
     public void undoMove(Move move) {
         currentDepth--;
         ancestry.remove(ancestry.size() - 1);
-        logger.info("Depth after undo: " + currentDepth);
-        logger.info("Ancestry after move: " + ancestry.toString());
+        logger.trace("Depth after undo: " + currentDepth);
+        logger.trace("Ancestry after move: " + ancestry.toString());
     }
 
     public List<Integer> getAncestry() {
@@ -70,7 +86,7 @@ class DigitsOfPi {
 
     private static final Logger logger = LoggerFactory.getLogger("DigitsOfPi");
 
-    private final int[] digits = new int[]{
+    private static final int[] digits = new int[]{
             3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5,
             8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2,
             6, 4, 3, 3, 8, 3, 2, 7, 9, 5, 0,
@@ -89,7 +105,7 @@ class DigitsOfPi {
 
         for (int i = 0; i < 81; i++) {
             if (match(candidate, ancestry)) {
-                return i;
+                return digits[i];
             } else {
                 /* Increment the candidate. */
                 tick(candidate);

@@ -1,6 +1,6 @@
 package za.ac.sun.cs.adversarial.agent;
 
-import za.ac.sun.cs.adversarial.domain.Board;
+import za.ac.sun.cs.adversarial.domain.Domain;
 import za.ac.sun.cs.adversarial.domain.Move;
 
 public abstract class Agent {
@@ -19,5 +19,5 @@ public abstract class Agent {
     /**
      * @return The internal board state of the agent.
      */
-    public abstract Board getBoard();
+    public abstract Domain getBoard();
 }
