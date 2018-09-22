@@ -6,7 +6,7 @@ import java.lang.StringBuilder;
 /**
  * This class represents the game state.
  */
-public class Board implements Domain{
+public class Board implements Domain {
     private final int m;
     private final int n;
     private final int k;

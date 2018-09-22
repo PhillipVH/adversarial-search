@@ -11,6 +11,7 @@ public class Move {
     private final int row;
     private final int column;
     private final Optional<Integer> player;
+    private int id;
 
     public Move(int row, int column) {
         this.row = row;
@@ -22,6 +23,18 @@ public class Move {
         this.row = row;
         this.column = column;
         this.player = Optional.of(player);
+    }
+
+    public Move(int id) {
+        this.row = 0;
+        this.column = 0;
+        this.player = Optional.empty();
+
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getRow() {
