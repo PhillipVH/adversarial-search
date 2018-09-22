@@ -43,7 +43,7 @@ public class TranspositionEntry {
         return this.depth;
     }
 
-    public void setKey(int key) {
+    public void setKey(long key) {
         this.key = key;
     }
 
