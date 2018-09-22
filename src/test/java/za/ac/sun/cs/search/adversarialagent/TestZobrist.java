@@ -13,7 +13,7 @@ public class TestZobrist {
     @Test
     public void smokeTest() {
         Board board = new Board(3, 3, 3);
-        Zobrist hasher = new Zobrist(3, 3, 2);
+        Zobrist hasher = new Zobrist(3, 3);
 
         hasher.initialHash(board);
 
@@ -25,7 +25,7 @@ public class TestZobrist {
 
         /* Initialize the board and the Zobrist hasher. */
         Board board = new Board(3, 3, 3);
-        Zobrist hasher = new Zobrist(3, 3, 2);
+        Zobrist hasher = new Zobrist(3, 3);
 
         /* Hash in the empty board. */
         hasher.initialHash(board);
@@ -53,10 +53,10 @@ public class TestZobrist {
     @Test
     public void uniqueHash() {
         HashSet<Long> hashes = new HashSet<Long>();
-        
+
         /* Initialize the board and the Zobrist hasher. */
         Board board = new Board(3, 3, 3);
-        Zobrist hasher = new Zobrist(3, 3, 2);
+        Zobrist hasher = new Zobrist(3, 3);
 
         hasher.initialHash(board);
 
@@ -116,15 +116,15 @@ public class TestZobrist {
 
         hasher.hashIn(move8, 1);
         Assert.assertFalse(hashes.contains(hasher.getHash()));
-        hashes.add(hasher.getHash());       
+        hashes.add(hasher.getHash());
 
     }
 
     @Test
-    public void multiMove() {    
+    public void multiMove() {
         /* Initialize the board and the Zobrist hasher. */
         Board board = new Board(3, 3, 3);
-        Zobrist hasher = new Zobrist(3, 3, 2);
+        Zobrist hasher = new Zobrist(3, 3);
 
         hasher.initialHash(board);
 
@@ -179,10 +179,10 @@ public class TestZobrist {
 
         hasher.hashOut(move8, 1);
         Assert.assertEquals(hash8, hasher.getHash());
-        
+
         hasher.hashOut(move9, 2);
         Assert.assertEquals(hash7, hasher.getHash());
-        
+
         hasher.hashOut(move7, 1);
         Assert.assertEquals(hash6, hasher.getHash());
 

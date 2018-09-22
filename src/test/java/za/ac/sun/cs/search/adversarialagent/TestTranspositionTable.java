@@ -16,7 +16,7 @@ public class TestTranspositionTable {
     @Test
     public void smokeTest() {
         Board board = new Board(3, 3, 3);
-        Zobrist hasher = new Zobrist(3, 3, 2);
+        Zobrist hasher = new Zobrist(3, 3);
         TranspositionTable table = new TranspositionTable(9);
 
         hasher.initialHash(board);
@@ -36,7 +36,7 @@ public class TestTranspositionTable {
     @Test
     public void nullTest() {
         Board board = new Board(3, 3, 3);
-        Zobrist hasher = new Zobrist(3, 3, 2);
+        Zobrist hasher = new Zobrist(3, 3);
         TranspositionTable table = new TranspositionTable(9);
 
         hasher.initialHash(board);
