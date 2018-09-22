@@ -14,10 +14,10 @@ import java.util.List;
 public class Negamax {
 
     /**
-     * The pure minimax variation of Negamax. (Knuth75, page 297)
+     * The pure minimax variation of Negamax. (Knuth75, page 296)
      * @return The value of the given node.
      */
-    public static int F0(DigitsOfPiBoard node, int depth, int color) {
+    public static int F0(Domain node, int depth, int color) {
         if ((depth == 0) || node.isTerminal() > 0) {
             return color * node.getValue();
         }

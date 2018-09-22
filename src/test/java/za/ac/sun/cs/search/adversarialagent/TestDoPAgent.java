@@ -25,7 +25,7 @@ public class TestDoPAgent {
         DigitsOfPiAgent playerOne = new DigitsOfPiAgent("F1");
         playerOne.requestMove();
 
-//        Assert.assertEquals(81, playerOne.getSampledDigits().size());
+        Assert.assertEquals(9, playerOne.getSampledDigits().size());
 
         System.out.println(playerOne.getSampledDigits());
         System.out.println(playerOne.getSampledIndices());
@@ -37,7 +37,7 @@ public class TestDoPAgent {
         DigitsOfPiAgent playerOne = new DigitsOfPiAgent("F2");
         playerOne.requestMove();
 
-//        Assert.assertEquals(81, playerOne.getSampledDigits().size());
+        Assert.assertEquals(20, playerOne.getSampledDigits().size());
 
         System.out.println(playerOne.getSampledDigits());
         System.out.println(playerOne.getSampledIndices());

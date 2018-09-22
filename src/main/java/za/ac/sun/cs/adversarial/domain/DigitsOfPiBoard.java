@@ -52,11 +52,12 @@ public class DigitsOfPiBoard implements Domain {
     @Override
     public int getValue() {
         int idx = DigitsOfPi.getIndex(ancestry);
+        int digit = DigitsOfPi.samplePi(idx);
 
-        sampledDigits.add(DigitsOfPi.samplePi(idx));
-        sampledIndices.add(idx);
+        sampledDigits.add(digit);
+        sampledIndices.add(idx + 1);
 
-        return 1;
+        return digit;
     }
 
     public List<Integer> getSampledDigits() {
