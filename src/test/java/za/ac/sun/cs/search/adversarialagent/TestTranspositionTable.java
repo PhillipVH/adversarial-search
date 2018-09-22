@@ -45,7 +45,7 @@ public class TestTranspositionTable {
 
         TranspositionEntry entry = table.get(hasher.getHash());
 
-        Assert.assertEquals(null, entry);
+        Assert.assertNull(entry);
 
 
     }

@@ -35,7 +35,7 @@ public class TranspositionWrapper {
 
         if (this.second.getDepth() >= this.candidate.getDepth()) {
             this.candidate = this.second;
-            this.second = this.candidate;
+            this.second = temp;
         }
     }
 }
