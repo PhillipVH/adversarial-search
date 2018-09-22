@@ -6,7 +6,7 @@ import java.lang.StringBuilder;
 /**
  * This class represents the game state.
  */
-public class Board {
+public class Board implements Domain{
     private final int m;
     private final int n;
     private final int k;
@@ -23,7 +23,7 @@ public class Board {
      * @return A list of all legal moves that can be made.
      */
     public ArrayList<Move> getLegalMoves() {
-        ArrayList<Move> moves = new ArrayList<Move>();
+        ArrayList<Move> moves = new ArrayList<>();
         for (int i = 0; i < this.m; i++) {
             for (int j = 0; j < this.n; j++) {
                 if (this.board[i][j] == 0) {

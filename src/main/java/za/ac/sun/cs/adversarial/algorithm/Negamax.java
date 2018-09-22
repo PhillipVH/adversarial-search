@@ -11,6 +11,31 @@ import java.util.List;
 public class Negamax {
 
     /**
+     * The pure minimax variation of Negamax. (Knuth75, page 297)
+     * @return The value of the given node.
+     */
+    public static int F0(Board node, int depth, int color) {
+        if ((depth == 0) || node.isTerminal() > 0) {
+            return color;
+        }
+
+        List<Move> moves= node.getLegalMoves();
+
+        int value = Integer.MIN_VALUE;
+
+        for (Move move : moves) {
+            node.makeMove(color, move);
+
+            value = max(value, -F0(node, depth - 1, -color));
+
+            node.undoMove(move);
+        }
+
+        return value;
+
+    }
+
+    /**
      * The branch-and-bound variation of Negamax. (Knuth75, page 297)
      * @return The value of the given node.
      */
