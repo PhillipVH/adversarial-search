@@ -55,7 +55,7 @@ public class Zobrist {
             for (int j = 0; j < n; j++) {
                 int piece = board.at(i, j);
                 if (piece != 0) {
-                    hash ^= this.table[i][j][piece];
+                    hash ^= this.table[i][j][Math.abs(piece) - 1];
                 }
             }
         }
@@ -76,7 +76,7 @@ public class Zobrist {
      * @param player The player making the move. 1 for player one, 2 for player 2.
      */
     public void hashOut(Move move, int player) {
-        this.hash ^= table[move.getRow()][move.getColumn()][player - 1];
+        this.hash ^= table[move.getRow()][move.getColumn()][Math.abs(player) - 1];
     }
 
     /**
@@ -85,4 +85,5 @@ public class Zobrist {
     public void hashIn(Move move, int player) {
         this.hashOut(move, player);
     }
+
 }

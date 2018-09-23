@@ -10,8 +10,8 @@ public class TestNegaDeepAgent {
 
     @Test
     public void smokeTest() {
-        Agent playerOne = new NegaDeepAgent(3, 3, 3, 10, 1);
-        Agent playerTwo = new RandomAgent(3, 3, 3, 2);
+        Agent playerOne = new NegaDeepAgent(3, 3, 3, 3,2);
+        Agent playerTwo = new RandomAgent(3, 3, 3, 1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
