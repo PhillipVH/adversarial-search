@@ -50,5 +50,32 @@ public class TestTranspositionTable {
 
 
     }
+
+    @Test
+    public void replacementSchemeTest() {
+        Board board = new Board(3, 3, 3);
+        Zobrist hasher = new Zobrist(3, 3);
+        TranspositionTable table = new TranspositionTable(2);
+        Optional<TranspositionEntry> entry;
+
+        table.put(1, new TranspositionEntry(1, new Move(0, 1), 1, Flag.UPPERBOUND, 2));
+        entry = table.get(1);
+        Assert.assertTrue(entry.isPresent());
+
+        table.put(5, new TranspositionEntry(5, new Move(0, 2), 1, Flag.UPPERBOUND,  4));
+        entry = table.get(5);
+        Assert.assertTrue(entry.isPresent());
+
+        table.put(9, new TranspositionEntry(9, new Move(0, 3), 1, Flag.UPPERBOUND, 6));
+        entry = table.get(9);
+        Assert.assertTrue(entry.isPresent());
+
+        entry = table.get(1);
+        Assert.assertFalse(entry.isPresent());
+
+        entry = table.get(5);
+        Assert.assertTrue(entry.isPresent());
+     
+    }
   
 }

@@ -15,7 +15,7 @@ public class TranspositionTable {
 
     public TranspositionTable(int bits) {
         this.bits = bits;
-        this.size = 2 ^ bits;
+        this.size = (int) Math.pow(2, bits);
         this.table = new TranspositionWrapper[this.size];
     }
 
