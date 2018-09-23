@@ -25,18 +25,20 @@ public class Zobrist {
      * @param m The number of rows in the (m,n,k)-game board
      * @param n The number of columns in the (m,n,k)-game board
      */
-    public Zobrist(int m, int n, int bitstringLength) {
+    public Zobrist(int m, int n) {
 
         this.m = m;
         this.n = n;
         this.hash = 0L;
 
+        int numberOfPlayers = 2;
+
         /* Initialize the bitstring table. */
-        table = new long[m][n][bitstringLength];
+        table = new long[m][n][numberOfPlayers];
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                for (int k = 0; k < bitstringLength; k++) {
+                for (int k = 0; k < numberOfPlayers; k++) {
                     table[i][j][k] = ThreadLocalRandom.current().nextLong();
                 }
             }
@@ -53,7 +55,7 @@ public class Zobrist {
             for (int j = 0; j < n; j++) {
                 int piece = board.at(i, j);
                 if (piece != 0) {
-                    hash ^= this.table[i][j][piece];
+                    hash ^= this.table[i][j][Math.abs(piece) - 1];
                 }
             }
         }
@@ -74,7 +76,7 @@ public class Zobrist {
      * @param player The player making the move. 1 for player one, 2 for player 2.
      */
     public void hashOut(Move move, int player) {
-        this.hash ^= table[move.getRow()][move.getColumn()][player - 1];
+        this.hash ^= table[move.getRow()][move.getColumn()][Math.abs(player) - 1];
     }
 
     /**
@@ -83,4 +85,5 @@ public class Zobrist {
     public void hashIn(Move move, int player) {
         this.hashOut(move, player);
     }
+
 }

@@ -23,6 +23,10 @@ public class TranspositionEntry {
         this.depth = depth;
     }
 
+    public TranspositionEntry() {
+
+    }
+
     public long getKey() {
         return this.key;
     }
