@@ -161,7 +161,7 @@ public class Negamax {
         int alphaOrig = alpha;
 
         /* Lookup the state in the Transposition Table. */
-        boolean useTranspositionTable = false;
+        boolean useTranspositionTable = true;
         Optional<TranspositionEntry> ttEntry = Optional.empty();
         if (useTranspositionTable) {
             hasher.initialHash((Board) node);
