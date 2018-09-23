@@ -25,6 +25,14 @@ public class NegaDeepAgent extends Agent {
     private final int player;
     private final int depth;
 
+    /* Statistics */
+    private int ttUpperboundCutoffs = 0;
+    private int ttLowerboundCutoffs = 0;
+    private int ttExactCutoffs = 0;
+    private int ttAlphaBetaCutoffs = 0;
+
+    private int exploredNodes = 0;
+
     private final Negamax negamax;
 
     public NegaDeepAgent(int m, int n, int k, int depth, int player) {
@@ -50,6 +58,15 @@ public class NegaDeepAgent extends Agent {
 
             int value = negamax.F3(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
 
+            /* Update statistics. */
+            ttAlphaBetaCutoffs += negamax.getTTAlphaBetaCutoffs();
+            ttExactCutoffs += negamax.getTTExactCutoffs();
+            ttLowerboundCutoffs += negamax.getTTLowerboundCutoffs();
+            ttUpperboundCutoffs += negamax.getTTUpperboundCutoffs();
+
+            exploredNodes += negamax.getExploredNodes();
+
+
 
             if (value > bestValue) {
                 bestValue = value;
@@ -72,5 +89,16 @@ public class NegaDeepAgent extends Agent {
     @Override
     public Domain getBoard() {
         return this.board;
+    }
+
+    public String reportStatistics() {
+        StringBuilder statisticsBuilder = new StringBuilder();
+        statisticsBuilder.append(String.format("ttUpperboundCutoffs = %d\n", ttUpperboundCutoffs));
+        statisticsBuilder.append(String.format("ttLowerboundCutoffs = %d\n", ttLowerboundCutoffs));
+        statisticsBuilder.append(String.format("ttAlphaBetaCutoffs = %d\n", ttAlphaBetaCutoffs));
+        statisticsBuilder.append(String.format("ttExactCutoffs = %d\n", ttExactCutoffs));
+        statisticsBuilder.append(String.format("exploredNodes = %d\n", exploredNodes));
+
+        return statisticsBuilder.toString();
     }
 }

@@ -26,8 +26,10 @@ public class TranspositionTable {
      * @param entry The {@link TranspositionEntry} to be added.
      */
     public void put(long hash, TranspositionEntry entry) {
-        logger.info("Inserting TTEntry: " + entry.toString());
+        logger.trace("Inserting TTEntry: " + entry.toString());
+
         hash = Math.abs(hash);
+
         int index = (int) (hash % this.size);
         TranspositionWrapper tw = this.table[index];
 
@@ -76,9 +78,11 @@ public class TranspositionTable {
 
         if (tw.getCandidate() != null && tw.getCandidate().getKey() == hash) {
             // Entry is in the candidate position.
+            logger.trace("Hit!");
             return Optional.of(tw.getCandidate());
         } else if (tw.getSecond() != null && tw.getSecond().getKey() == hash) {
             // Entry is in the secondary position.
+            logger.trace("Hit!");
             return Optional.of(tw.getSecond());
         } else {
             // Entry was not found.

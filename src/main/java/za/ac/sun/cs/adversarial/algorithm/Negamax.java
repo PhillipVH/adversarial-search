@@ -22,10 +22,20 @@ import java.util.Optional;
  */
 public class Negamax {
 
+    /* Logging */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /* Hashing and TT */
     private final TranspositionTable transpositionTable;
     private final Zobrist hasher;
+
+    /* Statistics */
+    private int ttUpperboundCutoffs = 0;
+    private int ttLowerboundCutoffs = 0;
+    private int ttExactCutoffs = 0;
+    private int ttAlphaBetaCutoffs = 0;
+
+    private int exploredNodes = 0;
 
     /**
      * Constructor required for use of the iterative deepening variant
@@ -141,7 +151,7 @@ public class Negamax {
     /**
      * The alpha-beta variation of Negamax, with move ordering from
      * a transposition table. And they said F2 was the optimum!
-     *
+     * <p>
      * (https://en.wikipedia.org/wiki/Negamax#Negamax_with_alpha_beta_pruning_and_transposition_tables)
      *
      * @return The value of the given node.
@@ -151,27 +161,37 @@ public class Negamax {
         int alphaOrig = alpha;
 
         /* Lookup the state in the Transposition Table. */
-        hasher.initialHash((Board) node);
-        Optional<TranspositionEntry> ttEntry = transpositionTable.get(hasher.getHash());
+        boolean useTranspositionTable = false;
+        Optional<TranspositionEntry> ttEntry = Optional.empty();
+        if (useTranspositionTable) {
+            hasher.initialHash((Board) node);
+            ttEntry = transpositionTable.get(hasher.getHash());
 
-        if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
-            Flag ttFlag = ttEntry.get().getFlag();
-            int ttValue = ttEntry.get().getScore();
+            if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
+                Flag ttFlag = ttEntry.get().getFlag();
+                int ttValue = ttEntry.get().getScore();
 
-            if (ttFlag == Flag.EXACT) {
-                logger.info("Exact match from TT");
-                return ttEntry.get().getScore();
-            } else if (ttFlag == Flag.LOWERBOUND) {
-                alpha = max(alpha, ttValue);
-            } else if (ttFlag == Flag.UPPERBOUND) {
-                beta = min(beta, ttValue);
+                if (ttFlag == Flag.EXACT) {
+                    logger.trace("Exact match from TT");
+                    ttExactCutoffs++;
+                    return ttEntry.get().getScore();
+                } else if (ttFlag == Flag.LOWERBOUND) {
+                    logger.trace("Lower bound match from TT");
+                    ttLowerboundCutoffs++;
+                    alpha = max(alpha, ttValue);
+                } else if (ttFlag == Flag.UPPERBOUND) {
+                    ttUpperboundCutoffs++;
+                    logger.trace("Upper bound match from TT");
+                    beta = min(beta, ttValue);
+                }
+
+                if (alpha >= beta) {
+                    ttAlphaBetaCutoffs++;
+                    logger.trace("Cut-off from TT");
+                    return ttValue;
+                }
+
             }
-
-            if (alpha >= beta) {
-                logger.info("Cut-off from TT");
-                return ttValue;
-            }
-
         }
 
         /* Core algorithm. */
@@ -180,6 +200,10 @@ public class Negamax {
         }
 
         List<Move> moves = node.getLegalMoves();
+
+        /* Update statistics. */
+        exploredNodes += moves.size();
+
 
         /* TODO: Replace shuffle with move ordering. */
         Collections.shuffle(moves);
@@ -205,20 +229,24 @@ public class Negamax {
         }
 
         /* Store the state in the Transposition Table. */
-        TranspositionEntry ttEntryRef = ttEntry.orElse(new TranspositionEntry());
+        if (useTranspositionTable) {
+            TranspositionEntry ttEntryRef = ttEntry.orElse(new TranspositionEntry());
 
-        if (value <= alphaOrig) {
-            ttEntryRef.setFlag(Flag.UPPERBOUND);
-        } else if (value >= beta) {
-            ttEntryRef.setFlag(Flag.LOWERBOUND);
-        } else {
-            ttEntryRef.setFlag(Flag.EXACT);
+            if (value <= alphaOrig) {
+                ttEntryRef.setFlag(Flag.UPPERBOUND);
+            } else if (value >= beta) {
+                ttEntryRef.setFlag(Flag.LOWERBOUND);
+            } else {
+                ttEntryRef.setFlag(Flag.EXACT);
+            }
+
+            ttEntryRef.setScore(value);
+            ttEntryRef.setKey(hasher.getHash());
+            ttEntryRef.setDepth(depth);
+
+            transpositionTable.put(hasher.getHash(), ttEntryRef);
+
         }
-
-        ttEntryRef.setDepth(depth);
-
-        transpositionTable.put(hasher.getHash(), ttEntryRef);
-
 
         return value;
     }
@@ -239,5 +267,25 @@ public class Negamax {
      */
     private static int min(int a, int b) {
         return (a < b) ? a : b;
+    }
+
+    public int getTTLowerboundCutoffs() {
+        return ttLowerboundCutoffs;
+    }
+
+    public int getTTUpperboundCutoffs() {
+        return ttUpperboundCutoffs;
+    }
+
+    public int getTTAlphaBetaCutoffs() {
+        return ttAlphaBetaCutoffs;
+    }
+
+    public int getTTExactCutoffs() {
+        return ttExactCutoffs;
+    }
+
+    public int getExploredNodes() {
+        return exploredNodes;
     }
 }
