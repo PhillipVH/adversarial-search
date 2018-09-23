@@ -1,6 +1,7 @@
 package za.ac.sun.cs.search.adversarialagent;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,9 +44,9 @@ public class TestTranspositionTable {
 
         board.makeMove(1, new Move(0, 0));
 
-        TranspositionEntry entry = table.get(hasher.getHash()).get();
+        Optional<TranspositionEntry> entry = table.get(hasher.getHash());
 
-        Assert.assertNull(entry);
+        Assert.assertFalse(entry.isPresent());
 
 
     }
