@@ -12,10 +12,7 @@ import za.ac.sun.cs.adversarial.transposition.Flag;
 import za.ac.sun.cs.adversarial.transposition.TranspositionEntry;
 import za.ac.sun.cs.adversarial.transposition.TranspositionTable;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class represents the Negamax algorithm, and it's many
@@ -277,26 +274,43 @@ public class Negamax {
      */
     private List<Move> orderMoves(List<Move> moves, Domain node, int color, int depth) {
 
-        LinkedList<Move> orderedMoves = new LinkedList<>();
+        List<Move> orderedMoves = new LinkedList<>();
+
+        LinkedList<TranspositionEntry> ttCandidates = new LinkedList<>();
+        Map<Integer, Move> depthToMoves = new HashMap<>();
 
         for (Move move : moves) {
             node.makeMove(color, move);
             hasher.hashIn(move, color);
-
 
             /* Lookup the state in the Transposition Table. */
             Optional<TranspositionEntry> ttEntry;
             hasher.initialHash((Board) node);
             ttEntry = transpositionTable.get(hasher.getHash());
 
-            if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
-                int ttValue = ttEntry.get().getScore();
-                int ttDepth = ttEntry.get().getDepth();
+            /* Add the candidate entries to a list. */
+            if (ttEntry.isPresent()) {
+                ttCandidates.add(ttEntry.get());
+                depthToMoves.put(ttEntry.get().getDepth(), move);
             }
-
 
             node.undoMove(move);
             hasher.hashOut(move, color);
+        }
+
+        /* If no candidates were found, return the original list. */
+        if (ttCandidates.isEmpty()) {
+            return moves;
+        }
+
+        /* Sort the available candidate. */
+        TreeSet<TranspositionEntry> ttCandidatesSorted = new TreeSet<>(ttCandidates);
+
+        while (!ttCandidatesSorted.isEmpty()) {
+            TranspositionEntry ttLast = ttCandidatesSorted.last();
+            orderedMoves.add(depthToMoves.get(ttLast.getDepth()));
+
+            ttCandidatesSorted.remove(ttLast);
         }
 
         return orderedMoves;

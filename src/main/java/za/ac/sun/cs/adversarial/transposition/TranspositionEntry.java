@@ -7,7 +7,7 @@ import za.ac.sun.cs.adversarial.domain.Move;
  * in a transposition table. It serves as a DTO,
  * with getters and setters where appropriate.
  */
-public class TranspositionEntry {
+public class TranspositionEntry implements Comparable {
 
     private long key;
     private Move move;
@@ -65,6 +65,13 @@ public class TranspositionEntry {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        TranspositionEntry other = (TranspositionEntry) o;
+
+        return Integer.compare(this.depth, other.getDepth());
     }
 }
 

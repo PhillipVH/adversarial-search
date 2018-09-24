@@ -4,7 +4,7 @@ package za.ac.sun.cs.adversarial.transposition;
  * The class representing a pair of {@link TranspositionEntry}s.
  */
 class TranspositionWrapper {
-    
+
     private TranspositionEntry candidate;
     private TranspositionEntry second;
 
@@ -36,7 +36,7 @@ class TranspositionWrapper {
     void reorder() {
         TranspositionEntry temp = this.candidate;
 
-        if (second != null && candidate != null&& second.getDepth() >= this.candidate.getDepth()) {
+        if (second != null && candidate != null && second.getDepth() >= this.candidate.getDepth()) {
             this.candidate = this.second;
             this.second = temp;
         }
