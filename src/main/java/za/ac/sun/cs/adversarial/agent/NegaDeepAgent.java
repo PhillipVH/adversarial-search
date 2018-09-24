@@ -25,7 +25,7 @@ public class NegaDeepAgent extends Agent {
     private final int player;
     private final int depth;
 
-    private boolean iterativeDeepening = false;
+    private boolean iterativeDeepening;
 
     /* Statistics */
     private int ttUpperboundCutoffs = 0;
@@ -43,7 +43,9 @@ public class NegaDeepAgent extends Agent {
         this.player = player;
         this.depth = depth;
 
-        this.negamax = new Negamax(m, n, "F3");
+        this.iterativeDeepening = false;
+
+        this.negamax = new Negamax(m, n, "F3", false);
 
     }
 
@@ -54,7 +56,18 @@ public class NegaDeepAgent extends Agent {
 
         this.iterativeDeepening = iterativeDeepening;
 
-        this.negamax = new Negamax(m, n, "F3");
+        this.negamax = new Negamax(m, n, "F3", false);
+
+    }
+
+    public NegaDeepAgent(int m, int n, int k, int depth, int player, boolean iterativeDeepening, boolean useTranspositionTable) {
+        this.board = new Board(m, n, k);
+        this.player = player;
+        this.depth = depth;
+
+        this.iterativeDeepening = iterativeDeepening;
+
+        this.negamax = new Negamax(m, n, "F3", useTranspositionTable);
 
     }
 

@@ -20,7 +20,7 @@ public class TestNegaDeepAgent {
 
 
     @Test
-    public void niceAndDeep() {
+    public void exposeBug1() {
         NegaDeepAgent playerOne = new NegaDeepAgent(5, 6, 4, 3,1);
         NegaDeepAgent playerTwo = new NegaDeepAgent(5, 6, 4, 5, 2, true);
 
@@ -29,5 +29,21 @@ public class TestNegaDeepAgent {
         referee.runGame();
 
         System.out.println(playerOne.reportStatistics());
+    }
+
+    @Test
+    public void niceAndDeep() {
+        NegaDeepAgent playerOne = new NegaDeepAgent(5, 5, 4, 3,1, false, true);
+        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 5, 4, 5, 2, true);
+
+        Referee referee = new Referee(playerOne, playerTwo);
+
+        referee.runGame();
+
+        System.out.println("Player 1");
+        System.out.println(playerOne.reportStatistics());
+
+        System.out.println("Player 2");
+        System.out.println(playerTwo.reportStatistics());
     }
 }

@@ -29,6 +29,9 @@ public class Negamax {
     private final TranspositionTable transpositionTable;
     private final Zobrist hasher;
 
+    /* Configuration */
+    private boolean useTranspositionTable;
+
     /* Statistics */
     private int ttUpperboundCutoffs = 0;
     private int ttLowerboundCutoffs = 0;
@@ -46,11 +49,12 @@ public class Negamax {
      * @param n
      * @param variant
      */
-    public Negamax(int m, int n, String variant) {
+    public Negamax(int m, int n, String variant, boolean useTranspositionTable) {
         this.transpositionTable = new TranspositionTable(9);
         this.hasher = new Zobrist(m, n);
+        this.useTranspositionTable = useTranspositionTable;
 
-        if (variant.equals("F3")) {
+        if (variant.equals("F3") && useTranspositionTable) {
             logger.info("Initializing transposition table");
         } else {
             logger.error("Variant does not support initialization: " + variant);
@@ -161,7 +165,6 @@ public class Negamax {
         int alphaOrig = alpha;
 
         /* Lookup the state in the Transposition Table. */
-        boolean useTranspositionTable = true;
         Optional<TranspositionEntry> ttEntry = Optional.empty();
         if (useTranspositionTable) {
             hasher.initialHash((Board) node);
