@@ -39,6 +39,7 @@ public class Negamax {
     private int ttAlphaBetaCutoffs = 0;
 
     private int exploredNodes = 0;
+    private Domain rootNode;
 
     /**
      * Constructor required for use of the iterative deepening variant
@@ -164,10 +165,15 @@ public class Negamax {
 
         int alphaOrig = alpha;
 
+        /* Ensure the hash is only initialized once. */
+        if (this.rootNode == null) {
+            this.rootNode = node;
+            hasher.initialHash((Board) node);
+        }
+
         /* Lookup the state in the Transposition Table. */
         Optional<TranspositionEntry> ttEntry = Optional.empty();
         if (useTranspositionTable) {
-            hasher.initialHash((Board) node);
             ttEntry = transpositionTable.get(hasher.getHash());
 
             if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
@@ -204,24 +210,30 @@ public class Negamax {
 
         List<Move> moves = node.getLegalMoves();
 
-        /* Update statistics. */
-        exploredNodes += moves.size();
 
 
-        /* TODO: Replace shuffle with move ordering. */
-        Collections.shuffle(moves);
+        /* Move ordering from TT if the flag is set,
+         * otherwise just shuffle the collection.
+         */
+        if (useTranspositionTable) {
+            orderMoves(moves, node, color);
+        } else {
+            Collections.shuffle(moves);
+        }
 
         int value = Integer.MIN_VALUE;
 
         for (Move move : moves) {
             node.makeMove(color, move);
-
             hasher.hashIn(move, color);
+
+            /* Update statistics. */
+            exploredNodes += 1;
+
 
             value = max(value, -F3(node, depth - 1, -beta, -alpha, -color));
 
             node.undoMove(move);
-
             hasher.hashOut(move, color);
 
             alpha = max(alpha, value);
@@ -252,6 +264,54 @@ public class Negamax {
         }
 
         return value;
+    }
+
+    /**
+     * Order moves according to their statistics in
+     * the transposition table.
+     *
+     * @param moves The moves to be ordered (this happens
+     *              in place)
+     * @param color
+     */
+    private void orderMoves(List<Move> moves, Domain node, int color) {
+
+        for (Move move : moves) {
+            node.makeMove(color, move);
+            hasher.hashIn(move, color);
+
+
+            /* Lookup the state in the Transposition Table. */
+            Optional<TranspositionEntry> ttEntry;
+            hasher.initialHash((Board) node);
+            ttEntry = transpositionTable.get(hasher.getHash());
+
+            if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
+                Flag ttFlag = ttEntry.get().getFlag();
+                int ttValue = ttEntry.get().getScore();
+
+                if (ttFlag == Flag.EXACT) {
+                    logger.trace("Exact match from TT");
+                    ttExactCutoffs++;
+                    return ttEntry.get().getScore();
+                } else if (ttFlag == Flag.LOWERBOUND) {
+                    logger.trace("Lower bound match from TT");
+                    ttLowerboundCutoffs++;
+                    alpha = max(alpha, ttValue);
+                } else if (ttFlag == Flag.UPPERBOUND) {
+                    ttUpperboundCutoffs++;
+                    logger.trace("Upper bound match from TT");
+                    beta = min(beta, ttValue);
+                }
+
+                if (alpha >= beta) {
+                    ttAlphaBetaCutoffs++;
+                    logger.trace("Cut-off from TT");
+                    return ttValue;
+                }
+
+            }
+        }
     }
 
     /**
