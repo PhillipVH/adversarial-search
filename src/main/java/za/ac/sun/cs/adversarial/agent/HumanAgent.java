@@ -32,10 +32,10 @@ public class HumanAgent extends Agent {
         while (true) {
 
             try {
-                System.out.println("Provide x-position: ");
+                System.out.println("Provide row-position: ");
                 x = scanner.nextInt() - 1;
 
-                System.out.println("Provide y-position: ");
+                System.out.println("Provide column-position: ");
                 y = scanner.nextInt() - 1;
 
                 Move humanMove = new Move(x, y);
@@ -69,8 +69,8 @@ public class HumanAgent extends Agent {
 
     public static void main (String[] args) {
 
-        Agent playerOne = new NegaDeepAgent(3, 3, 3, 3,1);
-        Agent playerTwo = new HumanAgent(3, 3, 3, 2);
+        Agent playerOne = new NegaDeepAgent(5, 5, 3, 8,1, true, true);
+        Agent playerTwo = new HumanAgent(5, 5, 3, 2);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
