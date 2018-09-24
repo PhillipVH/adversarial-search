@@ -1,7 +1,7 @@
 package za.ac.sun.cs.adversarial.transposition;
 
 /**
- * The class representing a pair of {@link TranspositionWrapper}s.
+ * The class representing a pair of {@link TranspositionEntry}s.
  */
 class TranspositionWrapper {
     

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * The class representing the agent that interacts with
  * the transposition table enabled variant of Negamax.
- *
+ * <p>
  * Unlink other variants, the transposition table and Zobrist
  * hashing facilities are all initialized when a new instance
  * of Negamax is instantiated.
@@ -50,31 +50,33 @@ public class NegaDeepAgent extends Agent {
         int bestValue = Integer.MIN_VALUE;
         Move bestMove = null;
 
-        List<Move> moves = board.getLegalMoves();
+        for (int i = 1; i <= depth; i++) {
+            List<Move> moves = board.getLegalMoves();
 
-        /* Step through all the initial moves, selecting the best one. */
-        for (Move move : moves) {
-            board.makeMove(player, move);
+            /* Step through all the initial moves, selecting the best one. */
+            for (Move move : moves) {
+                board.makeMove(player, move);
 
-            int value = negamax.F3(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+                int value = negamax.F3(board, i, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
 
-            /* Update statistics. */
-            ttAlphaBetaCutoffs += negamax.getTTAlphaBetaCutoffs();
-            ttExactCutoffs += negamax.getTTExactCutoffs();
-            ttLowerboundCutoffs += negamax.getTTLowerboundCutoffs();
-            ttUpperboundCutoffs += negamax.getTTUpperboundCutoffs();
+                /* Update statistics. */
+                ttAlphaBetaCutoffs += negamax.getTTAlphaBetaCutoffs();
+                ttExactCutoffs += negamax.getTTExactCutoffs();
+                ttLowerboundCutoffs += negamax.getTTLowerboundCutoffs();
+                ttUpperboundCutoffs += negamax.getTTUpperboundCutoffs();
 
-            exploredNodes += negamax.getExploredNodes();
+                exploredNodes += negamax.getExploredNodes();
 
 
+                if (value > bestValue) {
+                    bestValue = value;
+                    bestMove = move;
+                }
 
-            if (value > bestValue) {
-                bestValue = value;
-                bestMove = move;
+                board.undoMove(move);
             }
-
-            board.undoMove(move);
         }
+
 
         /* Apply the move to our internal board and return to the callee. */
         board.makeMove(player, bestMove);
