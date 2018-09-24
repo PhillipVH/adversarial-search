@@ -25,6 +25,12 @@ public class RandomAgent extends Agent {
         this.random = new Random();
     }
 
+    public RandomAgent(int m, int n, int k, int player, int seed) {
+        this.board = new Board(m, n, k);
+        this.player = player;
+        this.random = new Random(seed);
+    }
+
     @Override
     public Move requestMove() {
 
