@@ -1,5 +1,6 @@
 package za.ac.sun.cs.adversarial.domain;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -48,5 +49,17 @@ public class Move {
     @Override
     public String toString() {
         return "(" + row + ", " + column + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Move other = (Move) o;
+
+        return ((this.column == other.column) && (this.row == other.row));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, column);
     }
 }
