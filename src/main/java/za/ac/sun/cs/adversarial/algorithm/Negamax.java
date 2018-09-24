@@ -13,6 +13,7 @@ import za.ac.sun.cs.adversarial.transposition.TranspositionEntry;
 import za.ac.sun.cs.adversarial.transposition.TranspositionTable;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -210,13 +211,16 @@ public class Negamax {
 
         List<Move> moves = node.getLegalMoves();
 
-
+        if (moves.size() == 0) {
+            logger.debug("No legal moves");
+            return color * node.getValue();
+        }
 
         /* Move ordering from TT if the flag is set,
          * otherwise just shuffle the collection.
          */
         if (useTranspositionTable) {
-            orderMoves(moves, node, color);
+            orderMoves(moves, node, color, depth);
         } else {
             Collections.shuffle(moves);
         }
@@ -229,7 +233,6 @@ public class Negamax {
 
             /* Update statistics. */
             exploredNodes += 1;
-
 
             value = max(value, -F3(node, depth - 1, -beta, -alpha, -color));
 
@@ -270,11 +273,11 @@ public class Negamax {
      * Order moves according to their statistics in
      * the transposition table.
      *
-     * @param moves The moves to be ordered (this happens
-     *              in place)
-     * @param color
+     * @param moves The moves to be ordered
      */
-    private void orderMoves(List<Move> moves, Domain node, int color) {
+    private List<Move> orderMoves(List<Move> moves, Domain node, int color, int depth) {
+
+        LinkedList<Move> orderedMoves = new LinkedList<>();
 
         for (Move move : moves) {
             node.makeMove(color, move);
@@ -287,31 +290,16 @@ public class Negamax {
             ttEntry = transpositionTable.get(hasher.getHash());
 
             if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
-                Flag ttFlag = ttEntry.get().getFlag();
                 int ttValue = ttEntry.get().getScore();
-
-                if (ttFlag == Flag.EXACT) {
-                    logger.trace("Exact match from TT");
-                    ttExactCutoffs++;
-                    return ttEntry.get().getScore();
-                } else if (ttFlag == Flag.LOWERBOUND) {
-                    logger.trace("Lower bound match from TT");
-                    ttLowerboundCutoffs++;
-                    alpha = max(alpha, ttValue);
-                } else if (ttFlag == Flag.UPPERBOUND) {
-                    ttUpperboundCutoffs++;
-                    logger.trace("Upper bound match from TT");
-                    beta = min(beta, ttValue);
-                }
-
-                if (alpha >= beta) {
-                    ttAlphaBetaCutoffs++;
-                    logger.trace("Cut-off from TT");
-                    return ttValue;
-                }
-
+                int ttDepth = ttEntry.get().getDepth();
             }
+
+
+            node.undoMove(move);
+            hasher.hashOut(move, color);
         }
+
+        return orderedMoves;
     }
 
     /**

@@ -86,6 +86,10 @@ public class NegaDeepAgent extends Agent {
 
             List<Move> moves = board.getLegalMoves();
 
+            if (moves.size() == 0) {
+                logger.debug("No legal moves");
+            }
+
             /* Step through all the initial moves, selecting the best one. */
             for (Move move : moves) {
                 board.makeMove(player, move);
@@ -112,6 +116,9 @@ public class NegaDeepAgent extends Agent {
 
 
         /* Apply the move to our internal board and return to the callee. */
+        if (bestMove == null) {
+            logger.error("Null move returned!");
+        }
         board.makeMove(player, bestMove);
         return bestMove;
     }

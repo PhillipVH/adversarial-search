@@ -39,6 +39,9 @@ public class Board implements Domain {
      * Apply a move from the perspective of a given player onto the board.
      */
     public void makeMove(int player, Move move) {
+        if (move == null) {
+            System.out.println("Hmm");
+        }
         this.board[move.getRow()][move.getColumn()] = player;
     }
 

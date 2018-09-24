@@ -36,7 +36,7 @@ class TranspositionWrapper {
     void reorder() {
         TranspositionEntry temp = this.candidate;
 
-        if (this.second.getDepth() >= this.candidate.getDepth()) {
+        if (second != null && candidate != null&& second.getDepth() >= this.candidate.getDepth()) {
             this.candidate = this.second;
             this.second = temp;
         }

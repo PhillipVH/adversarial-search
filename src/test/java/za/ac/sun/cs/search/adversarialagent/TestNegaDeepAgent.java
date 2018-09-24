@@ -33,8 +33,8 @@ public class TestNegaDeepAgent {
 
     @Test
     public void niceAndDeep() {
-        NegaDeepAgent playerOne = new NegaDeepAgent(5, 5, 4, 3,1, false, true);
-        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 5, 4, 5, 2, true);
+        NegaDeepAgent playerOne = new NegaDeepAgent(5, 5, 4, 5,1, false, true);
+        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 5, 4, 5, 2, true, true);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
