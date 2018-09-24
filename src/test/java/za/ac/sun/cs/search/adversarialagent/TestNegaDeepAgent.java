@@ -21,8 +21,8 @@ public class TestNegaDeepAgent {
 
     @Test
     public void niceAndDeep() {
-        NegaDeepAgent playerOne = new NegaDeepAgent(6, 6, 4, 3,1);
-        NegaDeepAgent playerTwo = new NegaDeepAgent(6, 6, 4, 3, 2);
+        NegaDeepAgent playerOne = new NegaDeepAgent(5, 6, 4, 3,1);
+        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 6, 4, 5, 2, true);
 
         Referee referee = new Referee(playerOne, playerTwo);
 

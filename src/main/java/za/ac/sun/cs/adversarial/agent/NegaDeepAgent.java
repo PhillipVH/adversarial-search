@@ -25,6 +25,8 @@ public class NegaDeepAgent extends Agent {
     private final int player;
     private final int depth;
 
+    private boolean iterativeDeepening = false;
+
     /* Statistics */
     private int ttUpperboundCutoffs = 0;
     private int ttLowerboundCutoffs = 0;
@@ -32,6 +34,7 @@ public class NegaDeepAgent extends Agent {
     private int ttAlphaBetaCutoffs = 0;
 
     private int exploredNodes = 0;
+
 
     private final Negamax negamax;
 
@@ -44,20 +47,37 @@ public class NegaDeepAgent extends Agent {
 
     }
 
+    public NegaDeepAgent(int m, int n, int k, int depth, int player, boolean iterativeDeepening) {
+        this.board = new Board(m, n, k);
+        this.player = player;
+        this.depth = depth;
+
+        this.iterativeDeepening = iterativeDeepening;
+
+        this.negamax = new Negamax(m, n, "F3");
+
+    }
+
     @Override
     public Move requestMove() {
 
         int bestValue = Integer.MIN_VALUE;
         Move bestMove = null;
 
-        for (int i = 1; i <= depth; i++) {
+        for (int currentDepth = 1; currentDepth <= depth; currentDepth++) {
+
+            /* Iterative deepening switch. */
+            if (!iterativeDeepening) {
+                currentDepth = depth;
+            }
+
             List<Move> moves = board.getLegalMoves();
 
             /* Step through all the initial moves, selecting the best one. */
             for (Move move : moves) {
                 board.makeMove(player, move);
 
-                int value = negamax.F3(board, i, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+                int value = negamax.F3(board, currentDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
 
                 /* Update statistics. */
                 ttAlphaBetaCutoffs += negamax.getTTAlphaBetaCutoffs();
