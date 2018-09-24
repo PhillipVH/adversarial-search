@@ -68,7 +68,7 @@ public class Board implements Domain {
         }
 
         // Check Column wins
-        for (int i = 0; i <= this.n - this.k; i++) {
+        for (int i = 0; i <= this.m - this.k; i++) {
             for (int j = 0; j < this.n; j++) {
                 if (checkColumnWin(1, j, i)) {
                     return 1;
