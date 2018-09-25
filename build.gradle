@@ -1,11 +1,15 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'za.ac.sun.cs'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+mainClassName = 'za.ac.sun.cs.adversarial.referee.RefereeDriver'
+
 
 repositories {
     mavenCentral()
