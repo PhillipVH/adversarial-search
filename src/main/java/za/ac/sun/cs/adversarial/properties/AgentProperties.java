@@ -67,9 +67,9 @@ public class AgentProperties {
                 }
             case "Negascout":
                 if (useTT) {
-                    return new NegascoutAgent(m, n, k, depth, player);
+                    return new NegascoutAgent(m, n, k, depth, player, true);
                 } else {
-                    return new NegascoutAgent(m, n, k, depth, player);
+                    return new NegascoutAgent(m, n, k, depth, player, false);
                 }
             case "Random":
                 return new RandomAgent(m, n, k, player);

@@ -46,8 +46,7 @@ public class TestTranspositionTable {
 
         Optional<TranspositionEntry> entry = table.get(hasher.getHash());
 
-        Assert.assertFalse(entry.isPresent());
-
+        Assert.assertFalse(entry.isPresent());         
 
     }
 

@@ -9,11 +9,27 @@ public class NegascoutAgent extends Agent {
     private final Board board;
     private final int player;
     private final int depth;
+    private final boolean useTranspositionTable;
 
-    public NegascoutAgent(int m, int n, int k, int depth, int player) {
+        /* Statistics */
+        private int ttUpperboundCutoffs = 0;
+        private int ttLowerboundCutoffs = 0;
+        private int ttExactCutoffs = 0;
+        private int ttAlphaBetaCutoffs = 0;
+    
+        private int exploredNodes = 0;
+    
+    
+        private final Negascout negascout;
+
+    public NegascoutAgent(int m, int n, int k, int depth, int player, boolean useTranspositionTable) {
         this.board = new Board(m, n, k);
         this.player = player;
         this.depth = depth;
+        this.useTranspositionTable = useTranspositionTable;
+
+        this.negascout = new Negascout(m, n, useTranspositionTable);
+
     }
 
     @Override
@@ -25,7 +41,7 @@ public class NegascoutAgent extends Agent {
         for (Move move : board.getLegalMoves()) {
             board.makeMove(player, move);
 
-            int value = Negascout.NegaScout(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+            int value = negascout.NegaScout(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
 
             if (value > bestValue) {
                 bestValue = value;
