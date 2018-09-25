@@ -36,7 +36,6 @@ public class AgentProperties {
     }
 
     /**
-     * 
      * @param player - Player number.
      * @return The agent for the player.
      */
@@ -49,32 +48,33 @@ public class AgentProperties {
         int k = Integer.parseInt(prop.getProperty("k", "3"));
         int depth = Integer.parseInt(prop.getProperty("depth", "3"));
         String strategy = prop.getProperty("Strategy", "Negamax-F2");
-        String useTable = prop.getProperty("TranspositionTable" , "False");
+        String useTable = prop.getProperty("TranspositionTable", "False");
 
         if (useTable.equals("True")) {
             useTT = true;
         }
 
-        if (strategy.equals("Negamax-F1")) {
-            return new NegamaxAgent(m, n, k, depth, player, "F1");
-        } else if (strategy.equals("Negamax-F2")) {
-            return new NegamaxAgent(m, n, k, depth, player, "F2");
-        } else if (strategy.equals("Negamax-F3")) {
-            if (useTT) {
-                return new NegaDeepAgent(m, n, k, depth, player, true);
-            } else {
-                return new NegaDeepAgent(m, n, k, depth, player, false);
-            }
-        } else if (strategy.equals("Negascout")) {
-            if (useTT) {
-                return new NegascoutAgent(m, n, k, depth, player);
-            } else {
-                return new NegascoutAgent(m, n, k, depth, player);
-            }
-        } else if (strategy.equals("Random")) {
-            return new RandomAgent(m, n, k, player);
-        } else {
-            return new RandomAgent(m, n, k, player);
+        switch (strategy) {
+            case "Negamax-F1":
+                return new NegamaxAgent(m, n, k, depth, player, "F1");
+            case "Negamax-F2":
+                return new NegamaxAgent(m, n, k, depth, player, "F2");
+            case "Negamax-F3":
+                if (useTT) {
+                    return new NegaDeepAgent(m, n, k, depth, player, true);
+                } else {
+                    return new NegaDeepAgent(m, n, k, depth, player, false);
+                }
+            case "Negascout":
+                if (useTT) {
+                    return new NegascoutAgent(m, n, k, depth, player);
+                } else {
+                    return new NegascoutAgent(m, n, k, depth, player);
+                }
+            case "Random":
+                return new RandomAgent(m, n, k, player);
+            default:
+                return new RandomAgent(m, n, k, player);
         }
     }
 }

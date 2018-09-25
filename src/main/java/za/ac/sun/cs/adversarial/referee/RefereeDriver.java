@@ -18,8 +18,8 @@ public class RefereeDriver {
     }
 
     public void playOut() {
-        Agent playerOne =  new AgentProperties(this.configOne).parseProperties(1);
-        Agent playerTwo =  new AgentProperties(this.configTwo).parseProperties(2);
+        Agent playerOne = new AgentProperties(this.configOne).parseProperties(1);
+        Agent playerTwo = new AgentProperties(this.configTwo).parseProperties(2);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -27,7 +27,7 @@ public class RefereeDriver {
     }
 
     public static void main(String[] args) {
-        
+
         try {
             new RefereeDriver(args[0], args[1]).playOut();
         } catch (Exception e) {
