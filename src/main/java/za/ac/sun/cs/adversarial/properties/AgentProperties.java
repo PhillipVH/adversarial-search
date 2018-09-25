@@ -9,20 +9,13 @@ import za.ac.sun.cs.adversarial.agent.*;
 
 public class AgentProperties {
 
-    String fileName;
-
-    public AgentProperties(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public Agent parseProperties() {
+    public static Agent parseProperties(String filename, int player) {
         Properties prop = new Properties();
         InputStream input = null;
         boolean useTT = false;
-        int player = 0;
 
         try {
-            input = new FileInputStream(fileName);
+            input = new FileInputStream(filename);
             // Load the properties file.
             prop.load(input);
 
