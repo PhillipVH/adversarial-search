@@ -23,23 +23,23 @@ import za.ac.sun.cs.adversarial.transposition.TranspositionTable;
  */
 public class Negascout {
 
-        /* Logging */
-        private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    /* Logging */
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-        /* Hashing and TT */
-        private final TranspositionTable transpositionTable;
-        private final Zobrist hasher;
-    
-        /* Configuration */
-        private boolean useTranspositionTable;
-    
-        /* Statistics */
-        private int ttUpperboundCutoffs = 0;
-        private int ttLowerboundCutoffs = 0;
-        private int ttExactCutoffs = 0;
-        private int ttAlphaBetaCutoffs = 0;
-    
-        private int exploredNodes = 0;
+    /* Hashing and TT */
+    private final TranspositionTable transpositionTable;
+    private final Zobrist hasher;
+
+    /* Configuration */
+    private boolean useTranspositionTable;
+
+    /* Statistics */
+    private int ttUpperboundCutoffs = 0;
+    private int ttLowerboundCutoffs = 0;
+    private int ttExactCutoffs = 0;
+    private int ttAlphaBetaCutoffs = 0;
+
+    private int exploredNodes = 0;
 
     /**
      * The Negascout algorithm. (A Comparative Study of Game Tree Searching Methods, Fig 5)
@@ -54,7 +54,7 @@ public class Negascout {
 
         if (useTranspositionTable) {
             logger.info("Initializing transposition table");
-        } 
+        }
     }
 
     public int NegaScout(Board board, int depth, int alpha, int beta, int player) {
@@ -63,16 +63,16 @@ public class Negascout {
 
         /* Ensure the hash is only initialized once. */
         hasher.initialHash(board);
-         
+
         /* Lookup the state in the Transposition Table. */
         Optional<TranspositionEntry> ttEntry = Optional.empty();
         if (useTranspositionTable) {
             ttEntry = transpositionTable.get(hasher.getHash());
-    
+
             if (ttEntry.isPresent() && ttEntry.get().getDepth() >= depth) {
                 Flag ttFlag = ttEntry.get().getFlag();
                 int ttValue = ttEntry.get().getScore();
-    
+
                 if (ttFlag == Flag.EXACT) {
                     logger.trace("Exact match from TT");
                     ttExactCutoffs++;
@@ -86,7 +86,7 @@ public class Negascout {
                     logger.trace("Upper bound match from TT");
                     beta = Math.min(beta, ttValue);
                 }
-    
+
                 if (alpha >= beta) {
                     ttAlphaBetaCutoffs++;
                     logger.trace("Cut-off from TT");
@@ -104,7 +104,7 @@ public class Negascout {
         List<Move> moves = board.getLegalMoves();
 
         if (this.useTranspositionTable) {
-            orderMoves(moves, board, player, depth);
+            moves = orderMoves(moves, board, player, depth);
         } else {
             Collections.shuffle(moves);
         }
@@ -149,7 +149,7 @@ public class Negascout {
         /* Store the state in the Transposition Table. */
         if (useTranspositionTable) {
             TranspositionEntry ttEntryRef = ttEntry.orElse(new TranspositionEntry());
-        
+
             if (score <= alphaOrig) {
                 ttEntryRef.setFlag(Flag.UPPERBOUND);
             } else if (score >= beta) {
@@ -161,12 +161,12 @@ public class Negascout {
             ttEntryRef.setKey(hasher.getHash());
             ttEntryRef.setDepth(depth);
             this.transpositionTable.put(hasher.getHash(), ttEntryRef);
-            }
+        }
 
         return score;
     }
 
-       /**
+    /**
      * Order moves according to their statistics in
      * the transposition table.
      *
@@ -213,8 +213,16 @@ public class Negascout {
             ttCandidatesSorted.remove(ttLast);
         }
 
+
+        /* Add the remaining moves last. */
+        for (Move move : moves) {
+            if (!orderedMoves.contains(move)) {
+                orderedMoves.add(move);
+            }
+        }
+
         return orderedMoves;
-    } 
+    }
 
     public int getTTLowerboundCutoffs() {
         return ttLowerboundCutoffs;

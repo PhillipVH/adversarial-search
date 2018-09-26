@@ -217,7 +217,7 @@ public class Negamax {
          * otherwise just shuffle the collection.
          */
         if (useTranspositionTable) {
-            orderMoves(moves, node, color, depth);
+            moves = orderMoves(moves, node, color, depth);
         } else {
             Collections.shuffle(moves);
         }
