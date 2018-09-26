@@ -313,6 +313,13 @@ public class Negamax {
             ttCandidatesSorted.remove(ttLast);
         }
 
+        /* Add the remaining moves last. */
+        for (Move move : moves) {
+            if (!orderedMoves.contains(move)) {
+                orderedMoves.add(move);
+            }
+        }
+
         return orderedMoves;
     }
 
