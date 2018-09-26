@@ -68,7 +68,7 @@ public class TranspositionEntry implements Comparable<TranspositionEntry> {
     }
 
     @Override
-    public int compareTo(TranspositionEntry transpositionEntry) {
+    public int compareTo(TranspositionEntry other) {
         return Integer.compare(this.depth, other.getDepth());
     }
 }
