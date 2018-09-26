@@ -12,7 +12,7 @@ public class TestNegascout {
 
     @Test
     public void smokeTest() {
-        Agent playerOne = new NegascoutAgent(3, 3, 3, 10, 1);
+        Agent playerOne = new NegascoutAgent(3, 3, 3, 10, 1, true);
         Agent playerTwo = new RandomAgent(3, 3, 3, 2);
 
         Referee referee = new Referee(playerOne, playerTwo);
@@ -22,7 +22,7 @@ public class TestNegascout {
 
     @Test
     public void PruningPlayers() {
-        Agent playerOne = new NegascoutAgent(3, 3, 3, 10, 1);
+        Agent playerOne = new NegascoutAgent(3, 3, 3, 10, 1, false);
         Agent playerTwo = new NegamaxAgent(3, 3, 3, 10, 2);
 
         Referee referee = new Referee(playerOne, playerTwo);
@@ -33,7 +33,7 @@ public class TestNegascout {
     @Test
     public void PruningPlayers2() {
         Agent playerOne = new NegamaxAgent(3, 3, 3, 10, 1);
-        Agent playerTwo = new NegascoutAgent(3, 3, 3, 10, 2);
+        Agent playerTwo = new NegascoutAgent(3, 3, 3, 10, 2, false);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -44,7 +44,7 @@ public class TestNegascout {
     @Test
     public void largerRandomVNegascout() {
         Agent playerOne = new RandomAgent(5, 5, 5, 1);
-        Agent playerTwo = new NegascoutAgent(5, 5, 5, 5, 1);
+        Agent playerTwo = new NegascoutAgent(5, 5, 5, 5, 1, false);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
