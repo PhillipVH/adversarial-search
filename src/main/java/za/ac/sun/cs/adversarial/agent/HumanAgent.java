@@ -67,6 +67,11 @@ public class HumanAgent extends Agent {
         return this.board;
     }
 
+    @Override
+    public String reportStatistics() {
+        return "";
+    }
+
     public static void main (String[] args) {
 
         Agent playerOne = new NegaDeepAgent(5, 5, 3, 8,1, true, true);

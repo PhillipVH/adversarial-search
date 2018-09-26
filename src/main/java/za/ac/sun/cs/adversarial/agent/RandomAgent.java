@@ -56,4 +56,9 @@ public class RandomAgent extends Agent {
     public Domain getBoard() {
         return this.board;
     }
+
+    @Override
+    public String reportStatistics() {
+        return "";
+    }
 }

@@ -59,6 +59,11 @@ public class DigitsOfPiAgent extends Agent {
         return this.board;
     }
 
+    @Override
+    public String reportStatistics() {
+        return "";
+    }
+
     public List<Integer> getSampledDigits() {
         return this.board.getSampledDigits();
     }

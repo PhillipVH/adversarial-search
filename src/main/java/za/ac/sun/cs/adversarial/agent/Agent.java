@@ -20,4 +20,9 @@ public abstract class Agent {
      * @return The internal board state of the agent.
      */
     public abstract Domain getBoard();
+
+    /**
+     * @return Relevant statistics
+     */
+    public abstract String reportStatistics();
 }

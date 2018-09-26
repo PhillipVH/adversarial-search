@@ -9,9 +9,8 @@ public class NegascoutAgent extends Agent {
     private final Board board;
     private final int player;
     private final int depth;
-    private final boolean useTranspositionTable;
 
-        /* Statistics */
+    /* Statistics */
         private int ttUpperboundCutoffs = 0;
         private int ttLowerboundCutoffs = 0;
         private int ttExactCutoffs = 0;
@@ -26,7 +25,6 @@ public class NegascoutAgent extends Agent {
         this.board = new Board(m, n, k);
         this.player = player;
         this.depth = depth;
-        this.useTranspositionTable = useTranspositionTable;
 
         this.negascout = new Negascout(m, n, useTranspositionTable);
 
@@ -64,5 +62,17 @@ public class NegascoutAgent extends Agent {
     @Override
     public Domain getBoard() {
         return this.board;
+    }
+
+    @Override
+    public String reportStatistics() {
+        StringBuilder statisticsBuilder = new StringBuilder();
+        statisticsBuilder.append(String.format("ttUpperboundCutoffs = %d\n", ttUpperboundCutoffs));
+        statisticsBuilder.append(String.format("ttLowerboundCutoffs = %d\n", ttLowerboundCutoffs));
+        statisticsBuilder.append(String.format("ttAlphaBetaCutoffs = %d\n", ttAlphaBetaCutoffs));
+        statisticsBuilder.append(String.format("ttExactCutoffs = %d\n", ttExactCutoffs));
+        statisticsBuilder.append(String.format("exploredNodes = %d\n", exploredNodes));
+
+        return statisticsBuilder.toString();
     }
 }
