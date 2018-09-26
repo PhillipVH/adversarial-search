@@ -74,7 +74,7 @@ public class NegaDeepAgent extends Agent {
     @Override
     public Move requestMove() {
 
-        int bestValue = Integer.MIN_VALUE;
+        int bestValue = Integer.MIN_VALUE + 1;
         Move bestMove = null;
 
         for (int currentDepth = 1; currentDepth <= depth; currentDepth++) {
@@ -94,7 +94,7 @@ public class NegaDeepAgent extends Agent {
             for (Move move : moves) {
                 board.makeMove(player, move);
 
-                int value = negamax.F3(board, currentDepth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+                int value = negamax.F3(board, currentDepth, Integer.MIN_VALUE + 1, Integer.MAX_VALUE, player);
 
                 /* Update statistics. */
                 ttAlphaBetaCutoffs += negamax.getTTAlphaBetaCutoffs();

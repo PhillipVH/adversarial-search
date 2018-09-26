@@ -39,6 +39,13 @@ public class Negamax {
     private int exploredNodes = 0;
     private Domain rootNode;
 
+    public Negamax() {
+        this.transpositionTable = new TranspositionTable(9);
+        this.hasher = null;
+        this.useTranspositionTable = false;
+    }
+
+
     /**
      * Constructor required for use of the iterative deepening variant
      * of Negamax with alpha-beta pruning and move ordering from the
@@ -65,17 +72,19 @@ public class Negamax {
      *
      * @return The value of the given node.
      */
-    public static int F0(Domain node, int depth, int color) {
+    public  int F0(Domain node, int depth, int color) {
         if ((depth == 0) || node.isTerminal() > 0) {
             return color * node.getValue();
         }
 
         List<Move> moves = node.getLegalMoves();
 
-        int value = Integer.MIN_VALUE;
+        int value = Integer.MIN_VALUE + 1;
 
         for (Move move : moves) {
             node.makeMove(color, move);
+
+            exploredNodes++;
 
             value = max(value, -F0(node, depth - 1, -color));
 
@@ -91,19 +100,21 @@ public class Negamax {
      *
      * @return The value of the given node.
      */
-    public static int F1(Domain node, int depth, int bound, int color) {
+    public  int F1(Domain node, int depth, int bound, int color) {
         if ((depth == 0) || node.isTerminal() > 0) {
             return color * node.getValue();
         }
 
         List<Move> moves = node.getLegalMoves();
 
-        Collections.shuffle(moves);
+        //Collections.shuffle(moves);
 
-        int value = Integer.MIN_VALUE;
+        int value = Integer.MIN_VALUE + 1;
 
         for (Move move : moves) {
             node.makeMove(color, move);
+
+            exploredNodes++;
 
             value = max(value, -F1(node, depth - 1, -value, -color));
 
@@ -123,19 +134,21 @@ public class Negamax {
      *
      * @return The value of the given node.
      */
-    public static int F2(Domain node, int depth, int alpha, int beta, int color) {
+    public  int F2(Domain node, int depth, int alpha, int beta, int color) {
         if (depth == 0 || node.isTerminal() > 0) {
             return color * node.getValue();
         }
 
         List<Move> moves = node.getLegalMoves();
 
-        Collections.shuffle(moves);
+        //Collections.shuffle(moves);
 
-        int value = Integer.MIN_VALUE;
+        int value = Integer.MIN_VALUE + 1;
 
         for (Move move : moves) {
             node.makeMove(color, move);
+
+            exploredNodes++;
 
             value = max(value, -F2(node, depth - 1, -beta, -alpha, -color));
 
@@ -219,11 +232,10 @@ public class Negamax {
         if (useTranspositionTable) {
             moves = orderMoves(moves, node, color, depth);
         } else {
-            Collections.shuffle(moves);
+           Collections.shuffle(moves);
         }
 
-        int value = Integer.MIN_VALUE;
-
+        int value = Integer.MIN_VALUE + 1;
         for (Move move : moves) {
             node.makeMove(color, move);
             hasher.hashIn(move, color);

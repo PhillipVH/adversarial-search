@@ -24,6 +24,12 @@ public class RefereeDriver {
         Referee referee = new Referee(playerOne, playerTwo);
 
         referee.runGame();
+
+        System.out.println("Player 1 : ");
+        System.out.println(playerOne.reportStatistics());
+
+        System.out.println("Player 2 : ");
+        System.out.println(playerTwo.reportStatistics());
     }
 
     public static void main(String[] args) {

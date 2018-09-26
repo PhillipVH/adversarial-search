@@ -41,38 +41,43 @@ public class AgentProperties {
      */
     public Agent parseProperties(int player) {
         boolean useTT = false;
+        boolean useItDeep = true;
 
         // Parse the properties and build the agent
         int m = Integer.parseInt(prop.getProperty("m", "3"));
         int n = Integer.parseInt(prop.getProperty("n", "3"));
         int k = Integer.parseInt(prop.getProperty("k", "3"));
         int depth = Integer.parseInt(prop.getProperty("depth", "3"));
+        int seed = Integer.parseInt(prop.getProperty("seed", "-1"));
         String strategy = prop.getProperty("Strategy", "Negamax-F2");
-        String useTable = prop.getProperty("TranspositionTable", "False");
-
-        if (useTable.equals("True")) {
+        String useTable = prop.getProperty("TT", "false");
+        String useID = prop.getProperty("ID", "true");
+        
+        if (useTable.equals("true")) {
             useTT = true;
         }
 
+        if (useID.equals("false")) {
+            useItDeep = false;
+        }
+
         switch (strategy) {
+            case "Negamax-F0":
+                return new NegamaxAgent(m, n, k, depth, player, "F0");
             case "Negamax-F1":
                 return new NegamaxAgent(m, n, k, depth, player, "F1");
             case "Negamax-F2":
                 return new NegamaxAgent(m, n, k, depth, player, "F2");
             case "Negamax-F3":
-                if (useTT) {
-                    return new NegaDeepAgent(m, n, k, depth, player, true);
-                } else {
-                    return new NegaDeepAgent(m, n, k, depth, player, false);
-                }
+                return new NegaDeepAgent(m, n, k, depth, player, useItDeep, useTT);                
             case "Negascout":
-                if (useTT) {
-                    return new NegascoutAgent(m, n, k, depth, player, true);
-                } else {
-                    return new NegascoutAgent(m, n, k, depth, player, false);
-                }
+                return new NegascoutAgent(m, n, k, depth, player, useTT);                
             case "Random":
+            if (seed == -1) {
                 return new RandomAgent(m, n, k, player);
+            } else {
+                return new RandomAgent(m, n, k, player, seed);
+            }
             default:
                 return new RandomAgent(m, n, k, player);
         }

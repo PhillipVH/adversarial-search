@@ -17,10 +17,16 @@ public class DigitsOfPiAgent extends Agent {
     private final String variant;
     private final int depth;
 
+    private final Negamax negamax;
+
+
     public DigitsOfPiAgent(String variant) {
         this.board = new DigitsOfPiBoard();
         this.variant = variant;
         this.depth = 4;
+
+        this.negamax = new Negamax();
+
 
     }
 
@@ -30,15 +36,15 @@ public class DigitsOfPiAgent extends Agent {
         int value;
         switch (variant) {
             case "F0":
-                value = Negamax.F0(board, depth, 1);
+                value = negamax.F0(board, depth, 1);
                 logger.info("Value at root: " + value);
                 break;
             case "F1":
-                value = Negamax.F1(board, depth, Integer.MAX_VALUE, 1);
+                value = negamax.F1(board, depth, Integer.MAX_VALUE, 1);
                 logger.info("Value at root: " + value);
                 break;
             case "F2":
-                value = Negamax.F2(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
+                value = negamax.F2(board, depth, Integer.MIN_VALUE + 1, Integer.MAX_VALUE, 1);
                 logger.info("Value at root: " + value);
                 break;
             default:

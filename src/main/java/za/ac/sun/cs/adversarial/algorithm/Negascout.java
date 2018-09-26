@@ -99,7 +99,7 @@ public class Negascout {
             return player;
         }
 
-        int score = Integer.MIN_VALUE;
+        int score = Integer.MIN_VALUE + 1;
         int n = beta;
         List<Move> moves = board.getLegalMoves();
 

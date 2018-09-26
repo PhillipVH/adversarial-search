@@ -19,6 +19,12 @@ public class NegamaxAgent extends Agent {
 
     private String variant; // TODO Add variant system from DoP
 
+    private int exploredNodes = 0;
+
+
+    private final Negamax negamax;
+
+
     public NegamaxAgent(int m, int n, int k, int depth, int player) {
         this.board = new Board(m, n, k);
         this.player = player;
@@ -26,6 +32,8 @@ public class NegamaxAgent extends Agent {
 
         /* Defaults to Alpha-Beta. */
         this.variant = "F2";
+        this.negamax = new Negamax(m, n, "F2", false);
+
 
     }
 
@@ -35,12 +43,14 @@ public class NegamaxAgent extends Agent {
         this.depth = depth;
 
         this.variant = variant;
+        this.negamax = new Negamax(m, n, variant, false);
+
     }
 
     @Override
     public Move requestMove() {
 
-        int bestValue = Integer.MIN_VALUE;
+        int bestValue = Integer.MIN_VALUE + 1;
         Move bestMove = null;
 
         List<Move> moves = board.getLegalMoves();
@@ -49,16 +59,16 @@ public class NegamaxAgent extends Agent {
         for (Move move : moves) {
             board.makeMove(player, move);
 
-            int value = Integer.MIN_VALUE;
+            int value = Integer.MIN_VALUE + 1;
             switch (variant) {
                 case "F0":
-                    value = Negamax.F0(board, depth, player);
+                    value = negamax.F0(board, depth, player);
                     break;
                 case "F1":
-                    value = Negamax.F1(board, depth, Integer.MAX_VALUE, player);
+                    value = negamax.F1(board, depth, Integer.MAX_VALUE, player);
                     break;
                 case "F2":
-                    value = Negamax.F2(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+                    value = negamax.F2(board, depth, Integer.MIN_VALUE + 1, Integer.MAX_VALUE, player);
                     break;
                 case "F3":
                     break;
@@ -66,6 +76,9 @@ public class NegamaxAgent extends Agent {
                 default:
                     logger.error("Unsupported variant: " + variant);
             }
+
+            exploredNodes += negamax.getExploredNodes();
+
 
             if (value > bestValue) {
                 bestValue = value;
@@ -92,6 +105,9 @@ public class NegamaxAgent extends Agent {
 
     @Override
     public String reportStatistics() {
-        return "";
+        StringBuilder statisticsBuilder = new StringBuilder();
+        statisticsBuilder.append(String.format("exploredNodes = %d\n", exploredNodes));
+
+        return statisticsBuilder.toString();
     }
 }

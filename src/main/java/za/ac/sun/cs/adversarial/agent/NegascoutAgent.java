@@ -33,18 +33,20 @@ public class NegascoutAgent extends Agent {
     @Override
     public Move requestMove() {
 
-        int bestValue = Integer.MIN_VALUE;
+        int bestValue = Integer.MIN_VALUE + 1;
         Move bestMove = null;
         /* Step through all the initial moves, selecting the best one. */
         for (Move move : board.getLegalMoves()) {
             board.makeMove(player, move);
 
-            int value = negascout.NegaScout(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player);
+            int value = negascout.NegaScout(board, depth, Integer.MIN_VALUE + 1, Integer.MAX_VALUE, player);
 
             if (value > bestValue) {
                 bestValue = value;
                 bestMove = move;
             }
+
+            exploredNodes += negascout.getExploredNodes();
 
             board.undoMove(move);
         }
@@ -67,10 +69,6 @@ public class NegascoutAgent extends Agent {
     @Override
     public String reportStatistics() {
         StringBuilder statisticsBuilder = new StringBuilder();
-        statisticsBuilder.append(String.format("ttUpperboundCutoffs = %d\n", ttUpperboundCutoffs));
-        statisticsBuilder.append(String.format("ttLowerboundCutoffs = %d\n", ttLowerboundCutoffs));
-        statisticsBuilder.append(String.format("ttAlphaBetaCutoffs = %d\n", ttAlphaBetaCutoffs));
-        statisticsBuilder.append(String.format("ttExactCutoffs = %d\n", ttExactCutoffs));
         statisticsBuilder.append(String.format("exploredNodes = %d\n", exploredNodes));
 
         return statisticsBuilder.toString();
