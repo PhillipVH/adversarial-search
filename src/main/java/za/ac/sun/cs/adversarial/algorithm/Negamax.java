@@ -71,6 +71,11 @@ public class Negamax {
      */
     public int F0(Domain node, int depth, int color) {
         if ((depth == 0) || node.isTerminal() != -1) {
+
+            if (node instanceof DigitsOfPiBoard) {
+                return color * node.getValue(color);
+            }
+
             if (node.isTerminal() != -1) {
                 if (node.isTerminal() == 0) {
                     return 0;
@@ -107,6 +112,11 @@ public class Negamax {
      */
     public int F1(Domain node, int depth, int bound, int color) {
         if ((depth == 0) || node.isTerminal() != -1) {
+
+            if (node instanceof DigitsOfPiBoard) {
+                return color * node.getValue(color);
+            }
+
             if (node.isTerminal() != -1) {
                 if (node.isTerminal() == 0) {
                     return 0;
@@ -149,6 +159,11 @@ public class Negamax {
      */
     public int F2(Domain node, int depth, int alpha, int beta, int color) {
         if ((depth == 0) || node.isTerminal() != -1) {
+
+            if (node instanceof DigitsOfPiBoard) {
+                return color * node.getValue(color);
+            }
+
             if (node.isTerminal() != -1) {
                 if (node.isTerminal() == 0) {
                     return 0;

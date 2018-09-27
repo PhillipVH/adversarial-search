@@ -59,7 +59,7 @@ public class TestDoPBoard {
             board.makeMove(0, moves.get(0));
         }
 
-        Assert.assertEquals(3, board.getValue());
+        Assert.assertEquals(3, board.getValue(0));
         Assert.assertEquals(1, board.isTerminal());
     }
 
@@ -78,7 +78,7 @@ public class TestDoPBoard {
 
         board.makeMove(0, moves.get(1));
 
-        Assert.assertEquals(2, board.getValue());
+        Assert.assertEquals(2, board.getValue(0));
 
     }
 }
