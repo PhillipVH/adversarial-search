@@ -15,8 +15,7 @@ import za.ac.sun.cs.adversarial.transposition.TranspositionTable;
 import java.util.*;
 
 /**
- * This class represents the Negamax algorithm, and it's many
- * variations.
+ * This class represents the Negamax algorithm, and it's many variations.
  */
 public class Negamax {
 
@@ -45,11 +44,9 @@ public class Negamax {
         this.useTranspositionTable = false;
     }
 
-
     /**
-     * Constructor required for use of the iterative deepening variant
-     * of Negamax with alpha-beta pruning and move ordering from the
-     * transposition table.
+     * Constructor required for use of the iterative deepening variant of Negamax
+     * with alpha-beta pruning and move ordering from the transposition table.
      *
      * @param m
      * @param n
@@ -72,9 +69,17 @@ public class Negamax {
      *
      * @return The value of the given node.
      */
-    public  int F0(Domain node, int depth, int color) {
-        if ((depth == 0) || node.isTerminal() > 0) {
-            return color * node.getValue();
+    public int F0(Domain node, int depth, int color) {
+        if ((depth == 0) || node.isTerminal() != -1) {
+            if (node.isTerminal() != -1) {
+                if (node.isTerminal() == 0) {
+                    return 0;
+                } else {
+                    return color * 10000;
+                }
+            } else {
+                return node.getValue(color);
+            }
         }
 
         List<Move> moves = node.getLegalMoves();
@@ -100,14 +105,22 @@ public class Negamax {
      *
      * @return The value of the given node.
      */
-    public  int F1(Domain node, int depth, int bound, int color) {
-        if ((depth == 0) || node.isTerminal() > 0) {
-            return color * node.getValue();
+    public int F1(Domain node, int depth, int bound, int color) {
+        if ((depth == 0) || node.isTerminal() != -1) {
+            if (node.isTerminal() != -1) {
+                if (node.isTerminal() == 0) {
+                    return 0;
+                } else {
+                    return color * 10000;
+                }
+            } else {
+                return node.getValue(color);
+            }
         }
 
         List<Move> moves = node.getLegalMoves();
 
-        //Collections.shuffle(moves);
+        // Collections.shuffle(moves);
 
         int value = Integer.MIN_VALUE + 1;
 
@@ -134,14 +147,22 @@ public class Negamax {
      *
      * @return The value of the given node.
      */
-    public  int F2(Domain node, int depth, int alpha, int beta, int color) {
-        if (depth == 0 || node.isTerminal() > 0) {
-            return color * node.getValue();
+    public int F2(Domain node, int depth, int alpha, int beta, int color) {
+        if ((depth == 0) || node.isTerminal() != -1) {
+            if (node.isTerminal() != -1) {
+                if (node.isTerminal() == 0) {
+                    return 0;
+                } else {
+                    return color * 10000;
+                }
+            } else {
+                return node.getValue(color);
+            }
         }
 
         List<Move> moves = node.getLegalMoves();
 
-        //Collections.shuffle(moves);
+        // Collections.shuffle(moves);
 
         int value = Integer.MIN_VALUE + 1;
 
@@ -165,8 +186,8 @@ public class Negamax {
     }
 
     /**
-     * The alpha-beta variation of Negamax, with move ordering from
-     * a transposition table. And they said F2 was the optimum!
+     * The alpha-beta variation of Negamax, with move ordering from a transposition
+     * table. And they said F2 was the optimum!
      * <p>
      * (https://en.wikipedia.org/wiki/Negamax#Negamax_with_alpha_beta_pruning_and_transposition_tables)
      *
@@ -215,24 +236,33 @@ public class Negamax {
         }
 
         /* Core algorithm. */
-        if (depth == 0 || node.isTerminal() > 0) {
-            return color * node.getValue();
+        if ((depth == 0) || node.isTerminal() != -1) {
+            if (node.isTerminal() != -1) {
+                if (node.isTerminal() == 0) {
+                    return 0;
+                } else {
+                    return color * 10000;
+                }
+            } else {
+                return node.getValue(color);
+            }
         }
 
         List<Move> moves = node.getLegalMoves();
 
         if (moves.size() == 0) {
             logger.debug("No legal moves");
-            return color * node.getValue();
+            return color * node.getValue(color);
         }
 
-        /* Move ordering from TT if the flag is set,
-         * otherwise just shuffle the collection.
+        /*
+         * Move ordering from TT if the flag is set, otherwise just shuffle the
+         * collection.
          */
         if (useTranspositionTable) {
             moves = orderMoves(moves, node, color, depth);
         } else {
-           Collections.shuffle(moves);
+            // Collections.shuffle(moves);
         }
 
         int value = Integer.MIN_VALUE + 1;
@@ -279,8 +309,7 @@ public class Negamax {
     }
 
     /**
-     * Order moves according to their statistics in
-     * the transposition table.
+     * Order moves according to their statistics in the transposition table.
      *
      * @param moves The moves to be ordered
      */

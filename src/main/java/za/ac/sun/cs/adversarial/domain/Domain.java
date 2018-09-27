@@ -11,5 +11,5 @@ public interface Domain {
 
     void undoMove(Move move);
 
-    int getValue();
+    int getValue(int player);
 }

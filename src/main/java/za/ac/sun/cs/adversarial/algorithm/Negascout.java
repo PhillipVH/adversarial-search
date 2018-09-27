@@ -42,7 +42,8 @@ public class Negascout {
     private int exploredNodes = 0;
 
     /**
-     * The Negascout algorithm. (A Comparative Study of Game Tree Searching Methods, Fig 5)
+     * The Negascout algorithm. (A Comparative Study of Game Tree Searching Methods,
+     * Fig 5)
      *
      * @return The value of the given node.
      */
@@ -95,8 +96,16 @@ public class Negascout {
             }
         }
 
-        if (depth == 0 || (board.isTerminal()) != -1) {
-            return player;
+        if ((depth == 0) || board.isTerminal() != -1) {
+            if (board.isTerminal() != -1) {
+                if (board.isTerminal() == 0) {
+                    return 0;
+                } else {
+                    return player * 10000;
+                }
+            } else {
+                return board.getValue(player);
+            }
         }
 
         int score = Integer.MIN_VALUE + 1;
@@ -138,7 +147,6 @@ public class Negascout {
             board.undoMove(move);
             hasher.hashOut(move, player);
 
-
             // Cut offs.
             if (alpha >= beta) {
                 return alpha;
@@ -167,8 +175,7 @@ public class Negascout {
     }
 
     /**
-     * Order moves according to their statistics in
-     * the transposition table.
+     * Order moves according to their statistics in the transposition table.
      *
      * @param moves The moves to be ordered
      */
@@ -212,7 +219,6 @@ public class Negascout {
 
             ttCandidatesSorted.remove(ttLast);
         }
-
 
         /* Add the remaining moves last. */
         for (Move move : moves) {
