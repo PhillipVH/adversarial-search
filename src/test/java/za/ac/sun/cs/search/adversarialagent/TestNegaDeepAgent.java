@@ -12,7 +12,7 @@ public class TestNegaDeepAgent {
     @Test
     public void smokeTest() {
         Agent playerOne = new NegaDeepAgent(3, 3, 3, 3,1);
-        Agent playerTwo = new RandomAgent(3, 3, 3, 2);
+        Agent playerTwo = new RandomAgent(3, 3, 3, 1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -26,8 +26,8 @@ public class TestNegaDeepAgent {
 
     @Test
     public void exposeBug1() {
-        NegaDeepAgent playerOne = new NegaDeepAgent(5, 6, 4, 3,1);
-        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 6, 4, 5, 2, true);
+        NegaDeepAgent playerOne = new NegaDeepAgent(5, 6, 4, 3, 1);
+        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 6, 4, 5, -1, true);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -38,8 +38,8 @@ public class TestNegaDeepAgent {
 
     @Test
     public void niceAndDeep() {
-        NegaDeepAgent playerOne = new NegaDeepAgent(5, 5, 4, 5,1, false, true);
-        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 5, 4, 5, 2, true, true);
+        NegaDeepAgent playerOne = new NegaDeepAgent(5, 5, 4, 5, 1, false, true);
+        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 5, 4, 5, -1, true, true);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -55,7 +55,7 @@ public class TestNegaDeepAgent {
     @Test
     public void randomlyDeep() {
         RandomAgent playerOne = new RandomAgent(5, 5, 4, 1);
-        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 5, 4, 5, 2, true, true);
+        NegaDeepAgent playerTwo = new NegaDeepAgent(5, 5, 4, 5, -1, true, true);
 
         Referee referee = new Referee(playerOne, playerTwo);
 

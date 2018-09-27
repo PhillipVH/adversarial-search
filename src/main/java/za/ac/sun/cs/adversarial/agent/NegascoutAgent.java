@@ -22,11 +22,11 @@ public class NegascoutAgent extends Agent {
         private final Negascout negascout;
 
     public NegascoutAgent(int m, int n, int k, int depth, int player, boolean useTranspositionTable) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.depth = depth;
 
-        this.negascout = new Negascout(m, n, useTranspositionTable);
+        this.negascout = new Negascout(m, n, player, useTranspositionTable);
 
     }
 

@@ -34,6 +34,7 @@ public class Negamax {
     private int ttLowerboundCutoffs = 0;
     private int ttExactCutoffs = 0;
     private int ttAlphaBetaCutoffs = 0;
+    private int player;
 
     private int exploredNodes = 0;
     private Domain rootNode;
@@ -52,10 +53,11 @@ public class Negamax {
      * @param n
      * @param variant
      */
-    public Negamax(int m, int n, String variant, boolean useTranspositionTable) {
+    public Negamax(int m, int n, int player, String variant, boolean useTranspositionTable) {
         this.transpositionTable = new TranspositionTable(9);
         this.hasher = new Zobrist(m, n);
         this.useTranspositionTable = useTranspositionTable;
+        this.player = player;
 
         if (variant.equals("F3") && useTranspositionTable) {
             logger.info("Initializing transposition table");
@@ -73,14 +75,16 @@ public class Negamax {
         if ((depth == 0) || node.isTerminal() != -1) {
 
             if (node instanceof DigitsOfPiBoard) {
-                return color * node.getValue(color);
+                return node.getValue(color);
             }
 
             if (node.isTerminal() != -1) {
                 if (node.isTerminal() == 0) {
                     return 0;
+                } else if (node.isTerminal() == 1){
+                    return 10000;
                 } else {
-                    return color * 10000;
+                    return -10000;
                 }
             } else {
                 return node.getValue(color);
@@ -114,14 +118,16 @@ public class Negamax {
         if ((depth == 0) || node.isTerminal() != -1) {
 
             if (node instanceof DigitsOfPiBoard) {
-                return color * node.getValue(color);
+                return node.getValue(color);
             }
 
             if (node.isTerminal() != -1) {
                 if (node.isTerminal() == 0) {
                     return 0;
+                } else if (node.isTerminal() == 1){
+                    return 10000;
                 } else {
-                    return color * 10000;
+                    return -10000;
                 }
             } else {
                 return node.getValue(color);
@@ -161,14 +167,16 @@ public class Negamax {
         if ((depth == 0) || node.isTerminal() != -1) {
 
             if (node instanceof DigitsOfPiBoard) {
-                return color * node.getValue(color);
+                return node.getValue(color);
             }
 
             if (node.isTerminal() != -1) {
                 if (node.isTerminal() == 0) {
                     return 0;
+                } else if (node.isTerminal() == 1){
+                    return 10000;
                 } else {
-                    return color * 10000;
+                    return -10000;
                 }
             } else {
                 return node.getValue(color);
@@ -187,6 +195,7 @@ public class Negamax {
             exploredNodes++;
 
             value = max(value, -F2(node, depth - 1, -beta, -alpha, -color));
+
 
             node.undoMove(move);
 
@@ -255,8 +264,10 @@ public class Negamax {
             if (node.isTerminal() != -1) {
                 if (node.isTerminal() == 0) {
                     return 0;
+                } else if (node.isTerminal() == 1){
+                    return 10000;
                 } else {
-                    return color * 10000;
+                    return -10000;
                 }
             } else {
                 return node.getValue(color);

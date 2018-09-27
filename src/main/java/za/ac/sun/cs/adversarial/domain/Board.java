@@ -10,12 +10,14 @@ public class Board implements Domain {
     private final int m;
     private final int n;
     private final int k;
+    private final int player;
     private final int[][] board;
 
-    public Board(int m, int n, int k) {
+    public Board(int m, int n, int k, int player) {
         this.m = m;
         this.n = n;
         this.k = k;
+        this.player = player;
         this.board = new int[m][n];
     }
 
@@ -62,9 +64,9 @@ public class Board implements Domain {
         // Check Row wins
         for (int i = 0; i <= this.n - this.k; i++) {
             for (int j = 0; j < this.m; j++) {
-                if (checkRowWin(1, j, i)) {
+                if (checkRowWin(player, j, i)) {
                     return 1;
-                } else if (checkRowWin(2, j, i)) {
+                } else if (checkRowWin(-player, j, i)) {
                     return 2;
                 }
             }
@@ -73,9 +75,9 @@ public class Board implements Domain {
         // Check Column wins
         for (int i = 0; i <= this.m - this.k; i++) {
             for (int j = 0; j < this.n; j++) {
-                if (checkColumnWin(1, j, i)) {
+                if (checkColumnWin(player, j, i)) {
                     return 1;
-                } else if (checkColumnWin(2, j, i)) {
+                } else if (checkColumnWin(-player, j, i)) {
                     return 2;
                 }
             }
@@ -83,9 +85,9 @@ public class Board implements Domain {
         // Check Diagonal wins
         for (int i = 0; i <= this.n - this.k; i++) {
             for (int j = 0; j <= this.m - this.k; j++) {
-                if (checkDiagonalWin(1, j, i)) {
+                if (checkDiagonalWin(player, j, i)) {
                     return 1;
-                } else if (checkDiagonalWin(2, j, i)) {
+                } else if (checkDiagonalWin(-player, j, i)) {
                     return 2;
                 }
             }
@@ -249,7 +251,7 @@ public class Board implements Domain {
 
     @Override
     public int getValue(int player) {
-        int opponent = (player == 1) ? 2 : 1;
+        int opponent = -player;
         int myScore = 0;
         int opponentScore = 0;
 

@@ -20,13 +20,13 @@ public class RandomAgent extends Agent {
     private final Random random;
 
     public RandomAgent(int m, int n, int k, int player) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.random = new Random();
     }
 
     public RandomAgent(int m, int n, int k, int player, int seed) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.random = new Random(seed);
     }

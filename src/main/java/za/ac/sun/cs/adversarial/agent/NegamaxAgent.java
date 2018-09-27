@@ -26,24 +26,24 @@ public class NegamaxAgent extends Agent {
 
 
     public NegamaxAgent(int m, int n, int k, int depth, int player) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.depth = depth;
 
         /* Defaults to Alpha-Beta. */
         this.variant = "F2";
-        this.negamax = new Negamax(m, n, "F2", false);
+        this.negamax = new Negamax(m, n, player, "F2", false);
 
 
     }
 
     public NegamaxAgent(int m, int n, int k, int depth, int player, String variant) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.depth = depth;
 
         this.variant = variant;
-        this.negamax = new Negamax(m, n, variant, false);
+        this.negamax = new Negamax(m, n, player, variant, false);
 
     }
 

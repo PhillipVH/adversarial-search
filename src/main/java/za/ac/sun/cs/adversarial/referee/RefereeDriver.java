@@ -19,7 +19,7 @@ public class RefereeDriver {
 
     public void playOut() {
         Agent playerOne = new AgentProperties(this.configOne).parseProperties(1);
-        Agent playerTwo = new AgentProperties(this.configTwo).parseProperties(2);
+        Agent playerTwo = new AgentProperties(this.configTwo).parseProperties(-1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 

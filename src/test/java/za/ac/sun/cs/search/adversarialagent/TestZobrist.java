@@ -12,7 +12,7 @@ public class TestZobrist {
 
     @Test
     public void smokeTest() {
-        Board board = new Board(3, 3, 3);
+        Board board = new Board(3, 3, 3, 1);
         Zobrist hasher = new Zobrist(3, 3);
 
         hasher.initialHash(board);
@@ -24,7 +24,7 @@ public class TestZobrist {
     public void singleMove() {
 
         /* Initialize the board and the Zobrist hasher. */
-        Board board = new Board(3, 3, 3);
+        Board board = new Board(3, 3, 3, 1);
         Zobrist hasher = new Zobrist(3, 3);
 
         /* Hash in the empty board. */
@@ -55,7 +55,7 @@ public class TestZobrist {
         HashSet<Long> hashes = new HashSet<Long>();
 
         /* Initialize the board and the Zobrist hasher. */
-        Board board = new Board(3, 3, 3);
+        Board board = new Board(3, 3, 3, 1);
         Zobrist hasher = new Zobrist(3, 3);
 
         hasher.initialHash(board);
@@ -123,7 +123,7 @@ public class TestZobrist {
     @Test
     public void multiMove() {
         /* Initialize the board and the Zobrist hasher. */
-        Board board = new Board(3, 3, 3);
+        Board board = new Board(3, 3, 3, 1);
         Zobrist hasher = new Zobrist(3, 3);
 
         hasher.initialHash(board);

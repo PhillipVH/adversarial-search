@@ -29,6 +29,8 @@ public class Negascout {
     /* Hashing and TT */
     private final TranspositionTable transpositionTable;
     private final Zobrist hasher;
+    private final int player;
+
 
     /* Configuration */
     private boolean useTranspositionTable;
@@ -48,17 +50,18 @@ public class Negascout {
      * @return The value of the given node.
      */
 
-    public Negascout(int m, int n, boolean useTranspositionTable) {
+    public Negascout(int m, int n, int player, boolean useTranspositionTable) {
         this.transpositionTable = new TranspositionTable(9);
         this.hasher = new Zobrist(m, n);
         this.useTranspositionTable = useTranspositionTable;
+        this.player = player;
 
         if (useTranspositionTable) {
             logger.info("Initializing transposition table");
         }
     }
 
-    public int NegaScout(Board board, int depth, int alpha, int beta, int player) {
+    public int NegaScout(Board board, int depth, int alpha, int beta, int color) {
 
         int alphaOrig = alpha;
 
@@ -100,11 +103,13 @@ public class Negascout {
             if (board.isTerminal() != -1) {
                 if (board.isTerminal() == 0) {
                     return 0;
+                } else if (board.isTerminal() == 1){
+                    return 10000;
                 } else {
-                    return player * 10000;
+                    return -10000;
                 }
             } else {
-                return board.getValue(player);
+                return board.getValue(color);
             }
         }
 
@@ -113,7 +118,7 @@ public class Negascout {
         List<Move> moves = board.getLegalMoves();
 
         if (this.useTranspositionTable) {
-            moves = orderMoves(moves, board, player, depth);
+            moves = orderMoves(moves, board, color, depth);
         } else {
             Collections.shuffle(moves);
         }
@@ -124,17 +129,17 @@ public class Negascout {
             exploredNodes += 1;
 
             // Execute current move.
-            board.makeMove(player, move);
-            hasher.hashIn(move, player);
+            board.makeMove(color, move);
+            hasher.hashIn(move, color);
 
             // Call other player.
-            int current = -NegaScout(board, depth - 1, -n, -alpha, -player);
+            int current = -NegaScout(board, depth - 1, -n, -alpha, -color);
 
             if (current > score) {
                 if (n == beta || depth <= 2) {
                     score = current;
                 } else {
-                    score = -NegaScout(board, depth - 1, -beta, -current, -player);
+                    score = -NegaScout(board, depth - 1, -beta, -current, -color);
                 }
             }
 
@@ -145,7 +150,7 @@ public class Negascout {
 
             // Undo move
             board.undoMove(move);
-            hasher.hashOut(move, player);
+            hasher.hashOut(move, color);
 
             // Cut offs.
             if (alpha >= beta) {
@@ -179,7 +184,7 @@ public class Negascout {
      *
      * @param moves The moves to be ordered
      */
-    private List<Move> orderMoves(List<Move> moves, Board node, int player, int depth) {
+    private List<Move> orderMoves(List<Move> moves, Board node, int color, int depth) {
 
         List<Move> orderedMoves = new LinkedList<>();
 
@@ -187,8 +192,8 @@ public class Negascout {
         Map<Integer, Move> depthToMoves = new HashMap<>();
 
         for (Move move : moves) {
-            node.makeMove(player, move);
-            hasher.hashIn(move, player);
+            node.makeMove(color, move);
+            hasher.hashIn(move, color);
 
             /* Lookup the state in the Transposition Table. */
             Optional<TranspositionEntry> ttEntry;
@@ -202,7 +207,7 @@ public class Negascout {
             }
 
             node.undoMove(move);
-            hasher.hashOut(move, player);
+            hasher.hashOut(move, color);
         }
 
         /* If no candidates were found, return the original list. */

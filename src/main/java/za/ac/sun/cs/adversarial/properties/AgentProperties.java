@@ -42,7 +42,7 @@ public class AgentProperties {
     public Agent parseProperties(int player) {
         boolean useTT = false;
         boolean useItDeep = true;
-
+        
         // Parse the properties and build the agent
         int m = Integer.parseInt(prop.getProperty("m", "3"));
         int n = Integer.parseInt(prop.getProperty("n", "3"));
