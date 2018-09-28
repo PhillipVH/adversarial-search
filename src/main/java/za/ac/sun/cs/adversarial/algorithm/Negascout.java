@@ -120,7 +120,7 @@ public class Negascout {
         if (this.useTranspositionTable) {
             moves = orderMoves(moves, board, color, depth);
         } else {
-            Collections.shuffle(moves);
+            // Collections.shuffle(moves);
         }
 
         // Generate successors

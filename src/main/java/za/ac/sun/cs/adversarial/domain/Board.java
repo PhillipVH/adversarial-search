@@ -189,61 +189,65 @@ public class Board implements Domain {
     }
 
     /**
-     * @return True, if a horizontal win condition has been reached.
+     * @return The score in the specified row.
      */
     private int checkRowScore(int player, int row, int col) {
         int score = 0;
-        for (int j = col; j < col + this.k; j++) {
-            score++;
+        for (int j = col; j < n; j++) {
             if (this.board[row][j] != player) {
                 break;
             }
+            score++;
+
         }
         return score;
     }
 
     /**
-     * @return True, if a vertical win condition has been reached.
+     * @return The score in the specified column.
      */
     private int checkColumnScore(int player, int col, int row) {
         int score = 0;
-        for (int j = row; j < row + this.k; j++) {
-            score++;
+        for (int j = row; j < m; j++) {
             if (this.board[j][col] != player) {
                 break;
             }
+            score++;
+
         }
 
         return score;
     }
 
     /**
-     * @return True, if a diagonal win condition has been reached.
+     * @return The score in the specified diagonal.
      */
     private int checkDiagonalScore(int player, int row, int col) {
-        boolean forward = true, reverse = true;
         int score = 0;
         // Check forward diagonal
-        for (int j = 0; j < this.k; j++) {
-            score++;
+        for (int j = 0; j < m - row; j++) {
+            if (col + j >= n) {
+                break;
+            }
             if (this.board[row + j][col + j] != player) {
-                forward = false;
+                break;
+            }
+            score++;
+
+        }
+        int tmp = score;
+
+        // Check backward diagonal
+        for (int j = 0; j < m - row; j++) {
+            if (this.n - col - j - 1 < 0) {
                 break;
             }
 
-        }
-
-        // Check backward diagonal
-        if ((this.n - col - this.k) >= 0) {
-            score++;
-            for (int j = 0; j < this.k; j++) {
-                if (this.board[row + j][this.n - col - j - 1] != player) {
-                    reverse = false;
-                    break;
-                }
+            if (this.board[row + j][this.n - col - j - 1] != player) {
+                break;
             }
-        } else {
-            reverse = false;
+            score++;
+
         }
 
         return score;
@@ -255,23 +259,24 @@ public class Board implements Domain {
         int myScore = 0;
         int opponentScore = 0;
 
-        for (int i = 0; i <= this.n - this.k; i++) {
+        // Check row scores
+        for (int i = 0; i < this.n; i++) {
             for (int j = 0; j < this.m; j++) {
                 myScore += checkRowScore(player, j, i);
                 opponentScore += checkRowScore(opponent, j, i);
             }
         }
 
-        // Check Column wins
-        for (int i = 0; i <= this.m - this.k; i++) {
+        // Check Column scores
+        for (int i = 0; i < this.m; i++) {
             for (int j = 0; j < this.n; j++) {
                 myScore += checkColumnScore(player, j, i);
                 opponentScore += checkColumnScore(opponent, j, i);
             }
         }
-        // Check Diagonal wins
-        for (int i = 0; i <= this.n - this.k; i++) {
-            for (int j = 0; j <= this.m - this.k; j++) {
+        // Check Diagonal scores
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
                 myScore += checkDiagonalScore(player, j, i);
                 opponentScore += checkDiagonalScore(opponent, j, i);
             }
