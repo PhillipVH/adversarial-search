@@ -11,7 +11,7 @@ public class TestReferee {
     @Test
     public void smokeTest() {
         Agent playerOne = new NegamaxAgent(3, 3, 3, 10, 1);
-        Agent playerTwo = new NegamaxAgent(3, 3, 3, 2, 2);
+        Agent playerTwo = new NegamaxAgent(3, 3, 3, 2, -1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -21,7 +21,7 @@ public class TestReferee {
     @Test
     public void randomAgents() {
         Agent playerOne = new RandomAgent(3, 3, 3, 1);
-        Agent playerTwo = new RandomAgent(3, 3, 3, 2);
+        Agent playerTwo = new RandomAgent(3, 3, 3, -1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -31,7 +31,7 @@ public class TestReferee {
     @Test
     public void bigRandomAgents() {
         Agent playerOne = new RandomAgent(10, 10, 7, 1);
-        Agent playerTwo = new RandomAgent(10, 10, 7, 2);
+        Agent playerTwo = new RandomAgent(10, 10, 7, -1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -41,7 +41,7 @@ public class TestReferee {
     @Test
     public void smallerRandomAgents() {
         Agent playerOne = new RandomAgent(5, 5, 4, 1);
-        Agent playerTwo = new RandomAgent(5, 5, 4, 1);
+        Agent playerTwo = new RandomAgent(5, 5, 4, -1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -51,7 +51,7 @@ public class TestReferee {
     @Test
     public void randomVNegamax() {
         Agent playerOne = new RandomAgent(5, 5, 5, 1);
-        Agent playerTwo = new NegamaxAgent(5, 5, 5, 5, 2);
+        Agent playerTwo = new NegamaxAgent(5, 5, 5, 5, -1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 
@@ -62,7 +62,7 @@ public class TestReferee {
     @Test
     public void negamaxStandoff() {
         Agent playerOne = new NegamaxAgent(5, 5, 5, 5, 1);
-        Agent playerTwo = new NegamaxAgent(5, 5, 5, 5, 1);
+        Agent playerTwo = new NegamaxAgent(5, 5, 5, 5, -1);
 
         Referee referee = new Referee(playerOne, playerTwo);
 

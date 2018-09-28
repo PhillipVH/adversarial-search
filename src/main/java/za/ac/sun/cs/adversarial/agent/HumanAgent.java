@@ -18,7 +18,7 @@ public class HumanAgent extends Agent {
     private final int player;
 
     public HumanAgent(int m, int n, int k, int player) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
     }
     @Override

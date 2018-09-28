@@ -10,12 +10,14 @@ public class Board implements Domain {
     private final int m;
     private final int n;
     private final int k;
+    private final int player;
     private final int[][] board;
 
-    public Board(int m, int n, int k) {
+    public Board(int m, int n, int k, int player) {
         this.m = m;
         this.n = n;
         this.k = k;
+        this.player = player;
         this.board = new int[m][n];
     }
 
@@ -62,9 +64,9 @@ public class Board implements Domain {
         // Check Row wins
         for (int i = 0; i <= this.n - this.k; i++) {
             for (int j = 0; j < this.m; j++) {
-                if (checkRowWin(1, j, i)) {
+                if (checkRowWin(player, j, i)) {
                     return 1;
-                } else if (checkRowWin(2, j, i)) {
+                } else if (checkRowWin(-player, j, i)) {
                     return 2;
                 }
             }
@@ -73,9 +75,9 @@ public class Board implements Domain {
         // Check Column wins
         for (int i = 0; i <= this.m - this.k; i++) {
             for (int j = 0; j < this.n; j++) {
-                if (checkColumnWin(1, j, i)) {
+                if (checkColumnWin(player, j, i)) {
                     return 1;
-                } else if (checkColumnWin(2, j, i)) {
+                } else if (checkColumnWin(-player, j, i)) {
                     return 2;
                 }
             }
@@ -83,9 +85,9 @@ public class Board implements Domain {
         // Check Diagonal wins
         for (int i = 0; i <= this.n - this.k; i++) {
             for (int j = 0; j <= this.m - this.k; j++) {
-                if (checkDiagonalWin(1, j, i)) {
+                if (checkDiagonalWin(player, j, i)) {
                     return 1;
-                } else if (checkDiagonalWin(2, j, i)) {
+                } else if (checkDiagonalWin(-player, j, i)) {
                     return 2;
                 }
             }
@@ -95,7 +97,6 @@ public class Board implements Domain {
         if (getLegalMoves().size() == 0) {
             return 0;
         }
-
 
         // Nobody has won.
         return -1;
@@ -125,7 +126,6 @@ public class Board implements Domain {
 
         return true;
     }
-
 
     /**
      * @return True, if a diagonal win condition has been reached.
@@ -188,8 +188,100 @@ public class Board implements Domain {
         return board[i][j];
     }
 
+    /**
+     * @return The score in the specified row.
+     */
+    private int checkRowScore(int player, int row, int col) {
+        int score = 0;
+        for (int j = col; j < n; j++) {
+            if (this.board[row][j] != player) {
+                break;
+            }
+            score++;
+
+        }
+        return score;
+    }
+
+    /**
+     * @return The score in the specified column.
+     */
+    private int checkColumnScore(int player, int col, int row) {
+        int score = 0;
+        for (int j = row; j < m; j++) {
+            if (this.board[j][col] != player) {
+                break;
+            }
+            score++;
+
+        }
+
+        return score;
+    }
+
+    /**
+     * @return The score in the specified diagonal.
+     */
+    private int checkDiagonalScore(int player, int row, int col) {
+        int score = 0;
+        // Check forward diagonal
+        for (int j = 0; j < m - row; j++) {
+            if (col + j >= n) {
+                break;
+            }
+            if (this.board[row + j][col + j] != player) {
+                break;
+            }
+            score++;
+
+        }
+        int tmp = score;
+
+        // Check backward diagonal
+        for (int j = 0; j < m - row; j++) {
+            if (this.n - col - j - 1 < 0) {
+                break;
+            }
+
+            if (this.board[row + j][this.n - col - j - 1] != player) {
+                break;
+            }
+            score++;
+
+        }
+
+        return score;
+    }
+
     @Override
-    public int getValue() {
-        return 1;
+    public int getValue(int player) {
+        int opponent = -player;
+        int myScore = 0;
+        int opponentScore = 0;
+
+        // Check row scores
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+                myScore += checkRowScore(player, j, i);
+                opponentScore += checkRowScore(opponent, j, i);
+            }
+        }
+
+        // Check Column scores
+        for (int i = 0; i < this.m; i++) {
+            for (int j = 0; j < this.n; j++) {
+                myScore += checkColumnScore(player, j, i);
+                opponentScore += checkColumnScore(opponent, j, i);
+            }
+        }
+        // Check Diagonal scores
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+                myScore += checkDiagonalScore(player, j, i);
+                opponentScore += checkDiagonalScore(opponent, j, i);
+            }
+        }
+
+        return (myScore - opponentScore);
     }
 }

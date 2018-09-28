@@ -39,35 +39,35 @@ public class NegaDeepAgent extends Agent {
     private final Negamax negamax;
 
     public NegaDeepAgent(int m, int n, int k, int depth, int player) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.depth = depth;
 
         this.iterativeDeepening = false;
 
-        this.negamax = new Negamax(m, n, "F3", false);
+        this.negamax = new Negamax(m, n, player, "F3", false);
 
     }
 
     public NegaDeepAgent(int m, int n, int k, int depth, int player, boolean iterativeDeepening) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.depth = depth;
 
         this.iterativeDeepening = iterativeDeepening;
 
-        this.negamax = new Negamax(m, n, "F3", false);
+        this.negamax = new Negamax(m, n, player, "F3", false);
 
     }
 
     public NegaDeepAgent(int m, int n, int k, int depth, int player, boolean iterativeDeepening, boolean useTranspositionTable) {
-        this.board = new Board(m, n, k);
+        this.board = new Board(m, n, k, player);
         this.player = player;
         this.depth = depth;
 
         this.iterativeDeepening = iterativeDeepening;
 
-        this.negamax = new Negamax(m, n, "F3", useTranspositionTable);
+        this.negamax = new Negamax(m, n, player, "F3", useTranspositionTable);
 
     }
 

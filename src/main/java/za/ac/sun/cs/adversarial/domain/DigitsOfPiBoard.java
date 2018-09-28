@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The class representing the Digits of Pi domain
- * from Knuth and Moore's "An Analysis of Alpha-Beta Pruning", p299.
+ * The class representing the Digits of Pi domain from Knuth and Moore's "An
+ * Analysis of Alpha-Beta Pruning", p299.
  */
 public class DigitsOfPiBoard implements Domain {
 
@@ -25,7 +25,6 @@ public class DigitsOfPiBoard implements Domain {
         this.sampledDigits = new LinkedList<>();
         this.sampledIndices = new LinkedList<>();
     }
-
 
     @Override
     public List<Move> getLegalMoves() {
@@ -50,7 +49,7 @@ public class DigitsOfPiBoard implements Domain {
      * @return The digit of Pi that this state maps to
      */
     @Override
-    public int getValue() {
+    public int getValue(int player) {
         int idx = DigitsOfPi.getIndex(ancestry);
         int digit = DigitsOfPi.samplePi(idx);
 
@@ -96,22 +95,16 @@ class DigitsOfPi {
 
     private static final Logger logger = LoggerFactory.getLogger("DigitsOfPi");
 
-    private static final int[] digits = new int[]{
-            3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5,
-            8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2,
-            6, 4, 3, 3, 8, 3, 2, 7, 9, 5, 0,
-            2, 8, 8, 4, 1, 9, 7, 1, 6, 9, 3,
-            9, 9, 3, 7, 5, 1, 0, 5, 8, 2, 0,
-            9, 7, 4, 9, 4, 4, 5, 9, 2, 3, 0,
-            7, 8, 1, 6, 4, 0, 6, 2, 8, 6, 2,
-            0, 8, 9, 9};
+    private static final int[] digits = new int[] { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2, 6,
+            4, 3, 3, 8, 3, 2, 7, 9, 5, 0, 2, 8, 8, 4, 1, 9, 7, 1, 6, 9, 3, 9, 9, 3, 7, 5, 1, 0, 5, 8, 2, 0, 9, 7, 4, 9,
+            4, 4, 5, 9, 2, 3, 0, 7, 8, 1, 6, 4, 0, 6, 2, 8, 6, 2, 0, 8, 9, 9 };
 
     /**
-     * @return The index into the digits of Pi to which the ancestry
-     * record maps, or -1 in case of an error.
+     * @return The index into the digits of Pi to which the ancestry record maps, or
+     *         -1 in case of an error.
      */
     static int getIndex(List<Integer> ancestry) {
-        int[] candidate = new int[]{1, 1, 1, 1};
+        int[] candidate = new int[] { 1, 1, 1, 1 };
 
         for (int i = 0; i < 81; i++) {
             if (match(candidate, ancestry)) {
@@ -171,7 +164,6 @@ class DigitsOfPi {
         candidate[0] = 1;
 
         logger.error("Candidate has rolled over.");
-
 
     }
 
